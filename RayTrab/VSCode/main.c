@@ -1,7 +1,9 @@
 #include "raylib.h"
+#include <stdio.h>
 
 int main() 
 {
+    printf("\nTESTE\n");
     int height = 600;
     int width = 800;
 
