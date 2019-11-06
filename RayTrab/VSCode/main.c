@@ -10,7 +10,8 @@ int main()
     {
         BeginDrawing();
                 ClearBackground(WHITE);
-                DrawCircle((width/2),(height/2),50,BLUE);
+                DrawRectangle(width/8,height/8,40,30,MAROON);
+                DrawCircle((width/2),(height/2),50,RED);
         EndDrawing(); 
     };
     return 0;
