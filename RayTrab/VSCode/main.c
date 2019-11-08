@@ -21,10 +21,30 @@ int main()
     InitWindow(Tela_Largura,Tela_Altura,"Cena1");
     while (!WindowShouldClose())
     {
-        if (IsKeyDown(KEY_RIGHT)) movimento_personagem.x += 2.0f;
-        if (IsKeyDown(KEY_LEFT)) movimento_personagem.x -= 2.0f;
-        if (IsKeyDown(KEY_UP)) movimento_personagem.y -= 2.0f;
-        if (IsKeyDown(KEY_DOWN)) movimento_personagem.y += 2.0f;
+        if( ( movimento_personagem.x + 2.0f ) <= 120+(24*40) - 46 && ( movimento_personagem.x - 2.0f ) >= 120+(1*40) - 35 && ( movimento_personagem.y + 2.0f ) <= 80+(16*40) - 46 && ( movimento_personagem.y - 2.0f ) >= 80+(1*40) - 36 )
+        {
+            if (IsKeyDown(KEY_RIGHT)) movimento_personagem.x += 2.0f + 4;
+            if (IsKeyDown(KEY_LEFT)) movimento_personagem.x -= 2.0f + 4;
+            if (IsKeyDown(KEY_UP)) movimento_personagem.y -= 2.0f + 4;
+            if (IsKeyDown(KEY_DOWN)) movimento_personagem.y += 2.0f + 4;
+        }
+        else if( ( movimento_personagem.x + 2.0f ) >= 120+(24*40) - 46)
+        {
+            movimento_personagem.x = movimento_personagem.x - 1.0;
+        }
+        else if( ( movimento_personagem.y + 2.0f ) >= 80+(16*40) - 46)
+        {
+            movimento_personagem.y = movimento_personagem.y - 1.0;
+        }
+        else if( ( movimento_personagem.x - 2.0f ) <= 120+(1*40) - 35)
+        {
+            movimento_personagem.x = movimento_personagem.x + 1.0;
+        }
+        else if( ( movimento_personagem.y - 2.0f ) <= 80+(1*40) - 36)
+        {
+            movimento_personagem.y = movimento_personagem.y + 1.0;
+        }
+        
         
         BeginDrawing();
             ClearBackground(WHITE);
