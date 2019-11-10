@@ -7,7 +7,7 @@ int main()
     int Mapa1[24][16];
     Vector2 movimento_personagem = {(float)Tela_Altura/2,(float)Tela_Largura/2};
     //textura do chão
-    Texture2D chao = LoadTexture("chao3.png");
+    //Texture2D chao = LoadTexture("chao3.png");
 
     for (int i = 0; i < 16; i++)
     {
@@ -54,8 +54,8 @@ int main()
             {
                 for (int j = 0; j <24 ; j++)
                 {
-                    //DrawRectangle(120+(j*40),80+(i*40),50,50,BLACK);
-                    DrawTexture(chao, 120+(j*40), 80+(i*40), RAYWHITE);
+                    DrawRectangle(120+(j*40),80+(i*40),50,50,BLACK);
+                    //DrawTexture(chao, 120+(j*40), 80+(i*40), RAYWHITE);
                 }  
             }
             DrawFPS(50,50);
@@ -63,6 +63,6 @@ int main()
         EndDrawing();    
     }
     CloseWindow();
-    UnloadTexture(chao);
+
     
 }
