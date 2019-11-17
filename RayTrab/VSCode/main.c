@@ -20,7 +20,7 @@ int main()
     Texture2D chao = LoadTexture("img/chao3.png");
 
     //personagem animação andar1
-    Texture2D char_walk1 = LoadTexture("img/char_sprite_parado1.png");
+    Texture2D char_walk1 = LoadTexture("img/prisioneiro_pose02.png");
     float frame_largura1 = (float)(char_walk1.width);
     int max_frames1 = 0;
     float timer1 = 0.0f;
@@ -97,25 +97,25 @@ int main()
             if(IsKeyReleased(KEY_UP))
             {
                 UnloadTexture(char_walk1);
-                char_walk1 = LoadTexture("img/char_sprite_parado1.png");
+                char_walk1 = LoadTexture("img/prisioneiro_pose02.png");
                 animar = 0;
             }
             if(IsKeyReleased(KEY_DOWN))
             {
                 UnloadTexture(char_walk1);
-                char_walk1 = LoadTexture("img/char_sprite_parado3.png");
+                char_walk1 = LoadTexture("img/prisioneiro_pose01.png");
                 animar = 0;
             }
             if(IsKeyReleased(KEY_RIGHT))
             {
                 UnloadTexture(char_walk1);
-                char_walk1 = LoadTexture("img/char_sprite_parado2.png");
+                char_walk1 = LoadTexture("img/prisioneiro_pose03.png");
                 animar = 0;
             }
             if(IsKeyReleased(KEY_LEFT))
             {
                 UnloadTexture(char_walk1);
-                char_walk1 = LoadTexture("img/char_sprite_parado4.png");
+                char_walk1 = LoadTexture("img/prisioneiro_pose04.png");
                 animar = 0;
             }
         }
@@ -149,25 +149,25 @@ int main()
             if(contador == 1)
             {
                 UnloadTexture(char_walk1);
-                char_walk1 = LoadTexture("img/char_sprite_andando1.png");
+                char_walk1 = LoadTexture("img/prisioneiro_animacao02.png");
                 contador = 0;
             }
             if(contador == 2)
             {
                 UnloadTexture(char_walk1);
-                char_walk1 = LoadTexture("img/char_sprite_andando2.png");
+                char_walk1 = LoadTexture("img/prisioneiro_animacao01.png");
                 contador = 0;
             }
             if(contador == 3)
             {
                 UnloadTexture(char_walk1);
-                char_walk1 = LoadTexture("img/char_sprite_andando3.png");
+                char_walk1 = LoadTexture("img/prisioneiro_animacao03.png");
                 contador = 0;
             }
             if(contador == 4)
             {
                 UnloadTexture(char_walk1);
-                char_walk1 = LoadTexture("img/char_sprite_andando4.png");
+                char_walk1 = LoadTexture("img/prisioneiro_animacao04.png");
                 contador = 0;
             }
             if( animar != 0 )
