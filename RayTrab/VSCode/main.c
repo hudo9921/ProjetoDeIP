@@ -2,8 +2,8 @@
 #include "raylib.h"
 #include <stdio.h>
 
-const int largura = 1280;
-const int altura = 720;
+//const int largura = 1280;
+//const int altura = 720;
 
 typedef struct 
 {
@@ -16,7 +16,7 @@ typedef struct
     int frame;
     Vector2 posicao_quadrado;
     Texture2D char_walk
-    
+
 }Jogador;
 
 void personagem_movimentacao( Jogador* jogador )
@@ -176,18 +176,30 @@ void draw_jogador(Jogador* jogador)
 
 int main() 
 {
+    //variáveis de tela
+    int largura_tela = GetScreenWidth();
+    int altura_tela = GetScreenHeight();
+
+    //jogador
     Jogador jogador;
     jogador.x = 0;
     jogador.animar = 0;
     jogador.contador = 0;
     
     printf("\nXDXDXD\n");
-    InitWindow(largura,altura,"teste");
+    //tela
+    InitWindow(largura_tela,altura_tela,"teste");
     SetTargetFPS(60);
+    ToggleFullscreen();
+
     Texture2D chao = LoadTexture("img/chao3.png");
+    Texture2D parede01 = LoadTexture("img/paredes01.png");
+    Texture2D parede02 = LoadTexture("img/paredes02.png");
+    Texture2D parede03 = LoadTexture("img/paredes03.png");
+    Texture2D parede04 = LoadTexture("img/paredes04.png");
    
-    jogador.posicao_quadrado.x = (float)altura/2+50;
-    jogador.posicao_quadrado.y = (float)largura/2-50;
+    jogador.posicao_quadrado.x = (float)altura_tela + 500;
+    jogador.posicao_quadrado.y = (float)largura_tela + 500;
     jogador.char_walk = LoadTexture("img/prisioneiro_pose02.png");
 
     int Mapa1[24][16];
@@ -206,14 +218,20 @@ int main()
         BeginDrawing();
 
             ClearBackground(WHITE);
-            for (int i = 0; i < 16; i++)
+            for (int i = 0; i < 15; i++)
             {
                 for (int j = 0; j <24 ; j++)
                 {
-                    DrawTexture(chao,100+(j*40),20+(i*40),RAYWHITE);
+                    DrawTexture(chao, 100+(j*40) + 100, 20+(i*40) + 100,RAYWHITE);
                 }  
             }
+            
             DrawFPS(30,30);
+
+            DrawTexture( parede01, 100+(1*40) + 20, (1*40) + 45, RAYWHITE);
+            DrawTexture( parede02, 100+(1*40) + 1030, (1*40) + 45, RAYWHITE);
+            DrawTexture( parede03, 100+(1*40) + 60, (1*40) + 45, RAYWHITE);
+            DrawTexture( parede04, 100+(1*40) + 60, (1*40) + 688, RAYWHITE);
 
             draw_jogador(&jogador);
             
