@@ -22,55 +22,60 @@ typedef struct
 
 typedef struct
 {
-    Rectangle colisao[24];
+    Rectangle colisao[30];
+    Rectangle interacao[12];
 
 }Colisao_cenario;
 
-void personagem_movimentacao( Jogador* jogador , Rectangle A, Rectangle B[])
+void personagem_movimentacao( Jogador* jogador , Rectangle A, Rectangle B[], Rectangle D[], int* contador)
 {
     Rectangle C;
-    int direcao_UP = 0, direcao_DOWN = 0, direcao_RIGHT = 0, direcao_LEFT = 0;
-    for( int i = 0 ; i < 24 ; i++ )
+    Rectangle E;
+    //int direcao_UP = 0, direcao_DOWN = 0, direcao_RIGHT = 0, direcao_LEFT = 0;
+    for( int i = 0 ; i < 30 ; i++ )
     {
         if( CheckCollisionRecs( A, B[i]) )
         {
             C = B[i];
         }
     }
-    if( IsKeyDown(KEY_UP) ) direcao_UP++;
+    for( int i = 0 ; i < 12 ; i++ )
+    {
+        if( CheckCollisionRecs( A, D[i]) )
+        {
+            E = D[i];
+        }
+    }
+    /*if( IsKeyDown(KEY_UP) ) direcao_UP++;
     if( IsKeyDown(KEY_DOWN) ) direcao_DOWN++;
     if( IsKeyDown(KEY_RIGHT) ) direcao_RIGHT++;
-    if( IsKeyDown(KEY_LEFT) ) direcao_LEFT++;
+    if( IsKeyDown(KEY_LEFT) ) direcao_LEFT++;*/
 
     if( !CheckCollisionRecs( A, C) )
-    {  
+    { 
         if ( IsKeyDown(KEY_UP) && !CheckCollisionRecs( A, C) )
         {
             jogador->posicao_quadrado.y -= 2.0f+2;
             jogador->contador += 1;
             jogador->animar++;
-            direcao_UP = 0;
         } 
         if (IsKeyDown(KEY_DOWN) && !CheckCollisionRecs( A, C))
         {
             jogador->posicao_quadrado.y += 2.0f+2;
             jogador->contador += 2;
             jogador->animar++;
-            direcao_DOWN = 0;
         } 
         if (IsKeyDown(KEY_RIGHT) && !CheckCollisionRecs( A, C))
         {
             jogador->posicao_quadrado.x += 2.0f+2;
             jogador->contador += 3;
             jogador->animar++;
-            direcao_RIGHT = 0;
         } 
         if (IsKeyDown(KEY_LEFT) && !CheckCollisionRecs( A, C))
         {
             jogador->posicao_quadrado.x -= 2.0f+2;
             jogador->contador += 4;
             jogador->animar++;
-            direcao_LEFT = 0;
         } 
         if(IsKeyDown(KEY_UP) && IsKeyDown(KEY_RIGHT) && !CheckCollisionRecs( A, C) )
         {
@@ -78,8 +83,6 @@ void personagem_movimentacao( Jogador* jogador , Rectangle A, Rectangle B[])
             jogador->contador += 1;
             jogador->animar++; 
             jogador->posicao_quadrado.x += 1.0f+1;
-            direcao_UP = 0;
-            direcao_RIGHT = 0;
         }
         if(IsKeyDown(KEY_UP) && IsKeyDown(KEY_LEFT) && !CheckCollisionRecs( A, C) )
         {
@@ -87,8 +90,6 @@ void personagem_movimentacao( Jogador* jogador , Rectangle A, Rectangle B[])
             jogador->contador += 1;
             jogador->animar++; 
             jogador->posicao_quadrado.x -= 1.0f+1;
-            direcao_LEFT = 0;
-            direcao_UP = 0;
         }
         if(IsKeyDown(KEY_DOWN) && IsKeyDown(KEY_RIGHT) && !CheckCollisionRecs( A, C) )
         {
@@ -96,8 +97,6 @@ void personagem_movimentacao( Jogador* jogador , Rectangle A, Rectangle B[])
             jogador->contador += 2;
             jogador->animar++;
             jogador->posicao_quadrado.x += 1.0f+1;
-            direcao_RIGHT = 0;
-            direcao_DOWN = 0;
         }
         if(IsKeyDown(KEY_DOWN) && IsKeyDown(KEY_LEFT) && !CheckCollisionRecs( A, C) )
         {
@@ -105,57 +104,51 @@ void personagem_movimentacao( Jogador* jogador , Rectangle A, Rectangle B[])
             jogador->contador += 2;
             jogador->animar++;
             jogador->posicao_quadrado.x -= 1.0f+1;
-            direcao_DOWN = 0;
-            direcao_LEFT = 0;
         }
         if(IsKeyReleased(KEY_UP) && !CheckCollisionRecs( A, C) )
         {
             UnloadTexture(jogador->char_walk);
             jogador->char_walk = LoadTexture("img/prisioneiro_pose02.png");
             jogador->animar = 0;
-            direcao_UP = 0;
         }
         if(IsKeyReleased(KEY_DOWN) && !CheckCollisionRecs( A, C))
         {
             UnloadTexture(jogador->char_walk);
             jogador->char_walk = LoadTexture("img/prisioneiro_pose01.png");
             jogador->animar = 0;
-            direcao_DOWN = 0;
         }
         if(IsKeyReleased(KEY_RIGHT) && !CheckCollisionRecs( A, C))
         {
             UnloadTexture(jogador->char_walk);
             jogador->char_walk = LoadTexture("img/prisioneiro_pose03.png");
             jogador->animar = 0;
-            direcao_RIGHT = 0;
         }
         if(IsKeyReleased(KEY_LEFT) && !CheckCollisionRecs( A, C))
         {
             UnloadTexture(jogador->char_walk);
             jogador->char_walk = LoadTexture("img/prisioneiro_pose04.png");
             jogador->animar = 0;
-            direcao_LEFT = 0; 
         }
     }
     if ( (CheckCollisionRecs( A, C) && (IsKeyDown(KEY_RIGHT))) || (CheckCollisionRecs( A, C) && (IsKeyReleased(KEY_RIGHT))) )
     {
         jogador->posicao_quadrado.x = jogador->posicao_quadrado.x + (2.0f+8)*-1;
-        direcao_RIGHT = 0;
     }
     if ( (CheckCollisionRecs( A, C) && (IsKeyDown(KEY_UP))) || (CheckCollisionRecs( A, C) && (IsKeyReleased(KEY_UP))) )
     {
         jogador->posicao_quadrado.y = jogador->posicao_quadrado.y - (2.0f+8)*-1;
-        direcao_UP = 0;
     }
     if ( (CheckCollisionRecs( A, C) && (IsKeyDown(KEY_LEFT))) || (CheckCollisionRecs( A, C) && (IsKeyReleased(KEY_LEFT))) )
     {
         jogador->posicao_quadrado.x = jogador->posicao_quadrado.x - (2.0f+8)*-1;
-        direcao_LEFT = 0;
     }
     if( (CheckCollisionRecs( A, C) && (IsKeyDown(KEY_DOWN))) || (CheckCollisionRecs( A, C) && (IsKeyReleased(KEY_DOWN))) )
     {
         jogador->posicao_quadrado.y = jogador->posicao_quadrado.y + (2.0f+8)*-1;
-        direcao_DOWN = 0;
+    }
+    if( CheckCollisionRecs( A, E) )
+    {
+        *contador += 1;
     }
 }
 
@@ -224,12 +217,20 @@ int main()
     //variáveis de tela
     int largura_tela = GetScreenWidth();
     int altura_tela = GetScreenHeight();
-
+    
     //jogador
     Jogador jogador;
     jogador.x = 0;
     jogador.animar = 0;
     jogador.contador = 0;
+    int contador = 0;
+
+    //camera
+    Camera2D camera = { 0 };
+    camera.target = (Vector2){ jogador.posicao_quadrado.x + 2.0f+2, jogador.posicao_quadrado.y + 2.0f+2 };
+    camera.offset = (Vector2){ largura_tela/2 - 110, altura_tela/2 - 55};
+    camera.rotation = 0.0f;
+    camera.zoom = 2.0f;
     
     printf("\nXDXDXD\n");
     //tela
@@ -237,6 +238,7 @@ int main()
     SetTargetFPS(60);
     ToggleFullscreen();
 
+    //texturas
     Texture2D chao = LoadTexture("img/chao3.png");
     Texture2D parede01 = LoadTexture("img/paredes01.png");
     Texture2D parede02 = LoadTexture("img/paredes02.png");
@@ -383,6 +385,67 @@ int main()
         colisao_cenario.colisao[23].y = 200;
         colisao_cenario.colisao[23].width = porta_cela01.width;
         colisao_cenario.colisao[23].height = porta_cela01.height;
+        //estante01
+        colisao_cenario.colisao[24].x = 323 + 216; 
+        colisao_cenario.colisao[24].y = 123;
+        colisao_cenario.colisao[24].width = estante.width;
+        colisao_cenario.colisao[24].height = estante.height;
+        //estante02
+        colisao_cenario.colisao[25].x = 323 + 216 + 295; 
+        colisao_cenario.colisao[25].y = 123;
+        colisao_cenario.colisao[25].width = estante.width;
+        colisao_cenario.colisao[25].height = estante.height;
+        //estante03
+        colisao_cenario.colisao[26].x = 323 + 216 + 295*2; 
+        colisao_cenario.colisao[26].y = 123;
+        colisao_cenario.colisao[26].width = estante.width;
+        colisao_cenario.colisao[26].height = estante.height;
+        //estante04
+        colisao_cenario.colisao[27].x = 323 + 216; 
+        colisao_cenario.colisao[27].y = 123 + 445;
+        colisao_cenario.colisao[27].width = estante.width;
+        colisao_cenario.colisao[27].height = estante.height;
+        //estante02
+        colisao_cenario.colisao[28].x = 323 + 216 + 295; 
+        colisao_cenario.colisao[28].y = 123 + 445;
+        colisao_cenario.colisao[28].width = estante.width;
+        colisao_cenario.colisao[28].height = estante.height;
+        //estante03
+        colisao_cenario.colisao[29].x = 323 + 216 + 295*2; 
+        colisao_cenario.colisao[29].y = 123 + 445;
+        colisao_cenario.colisao[29].width = estante.width;
+        colisao_cenario.colisao[29].height = estante.height;
+        //interacao
+        //cama01
+        colisao_cenario.interacao[0].x = 323;
+        colisao_cenario.interacao[0].y = 123;
+        colisao_cenario.interacao[0].width = cama.width;
+        colisao_cenario.interacao[0].height = cama.height;
+        //cama02
+        colisao_cenario.interacao[1].x = 323 + 295;
+        colisao_cenario.interacao[1].y = 123;
+        colisao_cenario.interacao[1].width = cama.width;
+        colisao_cenario.interacao[1].height = cama.height;
+        //cama03
+        colisao_cenario.interacao[2].x = 323 + 295*2;
+        colisao_cenario.interacao[2].y = 123;
+        colisao_cenario.interacao[2].width = cama.width;
+        colisao_cenario.interacao[2].height = cama.height;
+        //cama01
+        colisao_cenario.interacao[3].x = 323;
+        colisao_cenario.interacao[3].y = 123 + 445;
+        colisao_cenario.interacao[3].width = cama.width;
+        colisao_cenario.interacao[3].height = cama.height;
+        //cama02
+        colisao_cenario.interacao[4].x = 323 + 295;
+        colisao_cenario.interacao[4].y = 123 + 445;
+        colisao_cenario.interacao[4].width = cama.width;
+        colisao_cenario.interacao[4].height = cama.height;
+        //cama03
+        colisao_cenario.interacao[5].x = 323 + 295*2;
+        colisao_cenario.interacao[5].y = 123 + 445;
+        colisao_cenario.interacao[5].width = cama.width;
+        colisao_cenario.interacao[5].height = cama.height;
     }
 
     Rectangle movimentacao = { jogador.posicao_quadrado.x, jogador.posicao_quadrado.y, jogador.char_walk.width, jogador.char_walk.height};
@@ -398,87 +461,99 @@ int main()
 
     while (!WindowShouldClose())
     {
-        personagem_movimentacao(&jogador, movimentacao, colisao_cenario.colisao);
+        personagem_movimentacao(&jogador, movimentacao, colisao_cenario.colisao, colisao_cenario.interacao, &contador);
+
+        camera.target.x = jogador.posicao_quadrado.x;
+        camera.target.y = jogador.posicao_quadrado.y;
         
         BeginDrawing();
 
             ClearBackground(WHITE);
-            for (int i = 0; i < 15; i++)
-            {
-                for (int j = 0; j <24 ; j++)
+            BeginMode2D(camera);
+                for (int i = 0; i < 15; i++)
                 {
-                    DrawTexture(chao, 100+(j*40) + 100, 20+(i*40) + 100,RAYWHITE);
-                }  
-            }
-            
-            DrawFPS(30,30);
-            {
-                DrawTexture( parede01, 100+(1*40) + 20, (1*40) + 45, RAYWHITE);
-                DrawTexture( parede02, 100+(1*40) + 1030, (1*40) + 45, RAYWHITE);
-                DrawTexture( parede03, 100+(1*40) + 60, (1*40) + 45, RAYWHITE);
-                DrawTexture( parede04, 100+(1*40) + 60, (1*40) + 688, RAYWHITE);
-                DrawTexture( parede05, 100+(1*40) + 735, (1*40) + 49, RAYWHITE);
+                    for (int j = 0; j <24 ; j++)
+                    {
+                        DrawTexture(chao, 100+(j*40) + 100, 20+(i*40) + 100,RAYWHITE);
+                    }  
+                }
 
-                DrawTexture( cela01, 100+(1*40) + 885, (1*40) + 250, RAYWHITE);
-                DrawTexture( cela02, 100+(1*40) + 750, (1*40) + 250, RAYWHITE);
-                DrawTexture( porta_cela03, 100+(1*40) + 845 + 33, (1*40) + 250, RAYWHITE);
+                //desenhando cenário
+                DrawFPS(30,30);
+                {
+                    DrawTexture( parede01, 100+(1*40) + 20, (1*40) + 45, RAYWHITE);
+                    DrawTexture( parede02, 100+(1*40) + 1030, (1*40) + 45, RAYWHITE);
+                    DrawTexture( parede03, 100+(1*40) + 60, (1*40) + 45, RAYWHITE);
+                    DrawTexture( parede04, 100+(1*40) + 60, (1*40) + 688, RAYWHITE);
+                    DrawTexture( parede05, 100+(1*40) + 735, (1*40) + 49, RAYWHITE);
 
-                DrawTexture( parede05, 100+(1*40) + 735 - 295, (1*40) + 49, RAYWHITE);    
-                DrawTexture( cela01, 100+(1*40) + 885 - 295, (1*40) + 250, RAYWHITE);
-                DrawTexture( cela02, 100+(1*40) + 750 - 295, (1*40) + 250, RAYWHITE);
-                DrawTexture( porta_cela03, 100+(1*40) + 845 - 295 + 33, (1*40) + 250, RAYWHITE);
+                    DrawTexture( cela01, 100+(1*40) + 885, (1*40) + 250, RAYWHITE);
+                    DrawTexture( cela02, 100+(1*40) + 750, (1*40) + 250, RAYWHITE);
+                    DrawTexture( porta_cela03, 100+(1*40) + 845 + 33, (1*40) + 250, RAYWHITE);
 
-                DrawTexture( parede05, 100+(1*40) + 735 - 590, (1*40) + 49, RAYWHITE);
-                DrawTexture( cela01, 100+(1*40) + 885 - 590, (1*40) + 250, RAYWHITE);
-                DrawTexture( cela02, 100+(1*40) + 750 - 590, (1*40) + 250, RAYWHITE);
-                DrawTexture( porta_cela03, 100+(1*40) + 845 - 590 + 33, (1*40) + 250, RAYWHITE);
+                    DrawTexture( parede05, 100+(1*40) + 735 - 295, (1*40) + 49, RAYWHITE);    
+                    DrawTexture( cela01, 100+(1*40) + 885 - 295, (1*40) + 250, RAYWHITE);
+                    DrawTexture( cela02, 100+(1*40) + 750 - 295, (1*40) + 250, RAYWHITE);
+                    DrawTexture( porta_cela03, 100+(1*40) + 845 - 295 + 33, (1*40) + 250, RAYWHITE);
 
-                DrawTexture( cela01, 100+(1*40) + 885, (1*40) + 487, RAYWHITE);
-                DrawTexture( cela02, 100+(1*40) + 750, (1*40) + 487, RAYWHITE);
-                DrawTexture( porta_cela03, 100+(1*40) + 845 + 33, (1*40) + 487, RAYWHITE);
+                    DrawTexture( parede05, 100+(1*40) + 735 - 590, (1*40) + 49, RAYWHITE);
+                    DrawTexture( cela01, 100+(1*40) + 885 - 590, (1*40) + 250, RAYWHITE);
+                    DrawTexture( cela02, 100+(1*40) + 750 - 590, (1*40) + 250, RAYWHITE);
+                    DrawTexture( porta_cela03, 100+(1*40) + 845 - 590 + 33, (1*40) + 250, RAYWHITE);
 
-                DrawTexture( cela01, 100+(1*40) + 885 - 295, (1*40) + 487, RAYWHITE);
-                DrawTexture( cela02, 100+(1*40) + 750 - 295, (1*40) + 487, RAYWHITE);
-                DrawTexture( porta_cela03, 100+(1*40) + 845 - 295 + 33, (1*40) + 487, RAYWHITE);
+                    DrawTexture( cela01, 100+(1*40) + 885, (1*40) + 487, RAYWHITE);
+                    DrawTexture( cela02, 100+(1*40) + 750, (1*40) + 487, RAYWHITE);
+                    DrawTexture( porta_cela03, 100+(1*40) + 845 + 33, (1*40) + 487, RAYWHITE);
 
-                DrawTexture( cela01, 100+(1*40) + 885 - 590, (1*40) + 487, RAYWHITE);
-                DrawTexture( cela02, 100+(1*40) + 750 - 590, (1*40) + 487, RAYWHITE);
-                DrawTexture( porta_cela03, 100+(1*40) + 845 - 590 + 33, (1*40) + 487, RAYWHITE);
+                    DrawTexture( cela01, 100+(1*40) + 885 - 295, (1*40) + 487, RAYWHITE);
+                    DrawTexture( cela02, 100+(1*40) + 750 - 295, (1*40) + 487, RAYWHITE);
+                    DrawTexture( porta_cela03, 100+(1*40) + 845 - 295 + 33, (1*40) + 487, RAYWHITE);
 
-                DrawTexture( cela03, 175, 200, RAYWHITE);
-                DrawTexture( porta_cela01, 238, 200, RAYWHITE);
+                    DrawTexture( cela01, 100+(1*40) + 885 - 590, (1*40) + 487, RAYWHITE);
+                    DrawTexture( cela02, 100+(1*40) + 750 - 590, (1*40) + 487, RAYWHITE);
+                    DrawTexture( porta_cela03, 100+(1*40) + 845 - 590 + 33, (1*40) + 487, RAYWHITE);
 
-                DrawTexture( parede06, 100+(1*40) + 735 - 590, (1*40) + 486, RAYWHITE);
-                DrawTexture( parede06, 100+(1*40) + 735 - 295, (1*40) + 486, RAYWHITE);
-                DrawTexture( parede06, 100+(1*40) + 735, (1*40) + 486, RAYWHITE);
+                    DrawTexture( cela03, 175, 200, RAYWHITE);
+                    DrawTexture( porta_cela01, 238, 200, RAYWHITE);
 
-                DrawTexture( cama, 323, 123, LIGHTGRAY);
-                DrawTexture( cama, 323 + 295, 123, LIGHTGRAY);
-                DrawTexture( cama, 323 + 295*2, 123, LIGHTGRAY);
-                DrawTexture( cama, 323, 123 + 445, LIGHTGRAY);
-                DrawTexture( cama, 323 + 295, 123 + 445, LIGHTGRAY);
-                DrawTexture( cama, 323 + 295*2, 123 + 445, LIGHTGRAY);
+                    DrawTexture( parede06, 100+(1*40) + 735 - 590, (1*40) + 486, RAYWHITE);
+                    DrawTexture( parede06, 100+(1*40) + 735 - 295, (1*40) + 486, RAYWHITE);
+                    DrawTexture( parede06, 100+(1*40) + 735, (1*40) + 486, RAYWHITE);
 
-                DrawTexture( estante, 323 + 216, 123, GRAY);
-                DrawTexture( estante, 323 + 216 + 295, 123, GRAY);
-                DrawTexture( estante, 323 + 216 + 295*2, 123, GRAY);
-                DrawTexture( estante, 323 + 216, 123 + 445, GRAY);
-                DrawTexture( estante, 323 + 216 + 295, 123 + 445, GRAY);
-                DrawTexture( estante, 323 + 216 + 295*2 , 123 + 445, GRAY);
-            }
+                    DrawTexture( cama, 323, 123, LIGHTGRAY);
+                    DrawTexture( cama, 323 + 295, 123, LIGHTGRAY);
+                    DrawTexture( cama, 323 + 295*2, 123, LIGHTGRAY);
+                    DrawTexture( cama, 323, 123 + 445, LIGHTGRAY);
+                    DrawTexture( cama, 323 + 295, 123 + 445, LIGHTGRAY);
+                    DrawTexture( cama, 323 + 295*2, 123 + 445, LIGHTGRAY);
 
-            draw_jogador(&jogador);
+                    DrawTexture( estante, 323 + 216, 123, GRAY);
+                    DrawTexture( estante, 323 + 216 + 295, 123, GRAY);
+                    DrawTexture( estante, 323 + 216 + 295*2, 123, GRAY);
+                    DrawTexture( estante, 323 + 216, 123 + 445, GRAY);
+                    DrawTexture( estante, 323 + 216 + 295, 123 + 445, GRAY);
+                    DrawTexture( estante, 323 + 216 + 295*2 , 123 + 445, GRAY);
+                }
 
-            movimentacao.x = jogador.posicao_quadrado.x;
-            movimentacao.y = jogador.posicao_quadrado.y;
-            movimentacao.width = jogador.char_walk.width;
-            movimentacao.height = jogador.char_walk.height;
-            if( jogador.animar > 0 )
-            {
-                movimentacao.width = jogador.char_walk.width / 2;
-            }
-            
-            jogador.contador = 0;
+                draw_jogador(&jogador);
+
+                movimentacao.x = jogador.posicao_quadrado.x;
+                movimentacao.y = jogador.posicao_quadrado.y;
+                movimentacao.width = jogador.char_walk.width;
+                movimentacao.height = jogador.char_walk.height;
+                if( jogador.animar > 0 )
+                {
+                    movimentacao.width = jogador.char_walk.width / 2;
+                }
+
+                if( contador > 0 )
+                {
+                    DrawText("Aperte E para procurar.", jogador.posicao_quadrado.x - 40, jogador.posicao_quadrado.y - 20, 10 , RED);
+                    contador = 0;
+                }
+                
+                jogador.contador = 0;
+            EndMode2D();
 
         EndDrawing();
     }
