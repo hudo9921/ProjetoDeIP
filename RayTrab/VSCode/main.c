@@ -2,9 +2,6 @@
 #include "raylib.h"
 #include <stdio.h>
 
-//const int largura = 1280;
-//const int altura = 720;
-
 typedef struct 
 {
     int x;
@@ -17,6 +14,10 @@ typedef struct
     Vector2 posicao_quadrado;
     Texture2D char_walk;
     Rectangle rectangle_walk;
+    Rectangle Up;
+    Rectangle Down;
+    Rectangle Right;
+    Rectangle Left;
 
 }Jogador;
 
@@ -27,128 +28,140 @@ typedef struct
 
 }Colisao_cenario;
 
-void personagem_movimentacao( Jogador* jogador , Rectangle A, Rectangle B[], Rectangle D[], int* contador)
+void personagem_movimentacao( Jogador* jogador , Rectangle B[], Rectangle D[], int contador[])
 {
     Rectangle C;
     Rectangle E;
-    //int direcao_UP = 0, direcao_DOWN = 0, direcao_RIGHT = 0, direcao_LEFT = 0;
+
     for( int i = 0 ; i < 30 ; i++ )
     {
-        if( CheckCollisionRecs( A, B[i]) )
+        if( CheckCollisionRecs( jogador->Up, B[i]) )
+        {
+            C = B[i];
+        }
+        if( CheckCollisionRecs( jogador->Right, B[i]) )
+        {
+            C = B[i];
+        }
+        if( CheckCollisionRecs( jogador->Left, B[i]) )
+        {
+            C = B[i];
+        }
+        if( CheckCollisionRecs( jogador->Down, B[i]) )
         {
             C = B[i];
         }
     }
     for( int i = 0 ; i < 12 ; i++ )
     {
-        if( CheckCollisionRecs( A, D[i]) )
+        if( CheckCollisionRecs( jogador->Up, D[i]) )
         {
             E = D[i];
         }
     }
-    /*if( IsKeyDown(KEY_UP) ) direcao_UP++;
-    if( IsKeyDown(KEY_DOWN) ) direcao_DOWN++;
-    if( IsKeyDown(KEY_RIGHT) ) direcao_RIGHT++;
-    if( IsKeyDown(KEY_LEFT) ) direcao_LEFT++;*/
 
-    if( !CheckCollisionRecs( A, C) )
-    { 
-        if ( IsKeyDown(KEY_UP) && !CheckCollisionRecs( A, C) )
+    if( !CheckCollisionRecs( jogador->Up, C) && !CheckCollisionRecs( jogador->Right, C) && !CheckCollisionRecs( jogador->Left, C) && !CheckCollisionRecs( jogador->Down, C))
+    {
+        if ( IsKeyDown(KEY_UP) && !CheckCollisionRecs( jogador->Up, C) && !CheckCollisionRecs( jogador->Right, C) && !CheckCollisionRecs( jogador->Left, C) && !CheckCollisionRecs( jogador->Down, C))
         {
             jogador->posicao_quadrado.y -= 2.0f+2;
             jogador->contador += 1;
             jogador->animar++;
         } 
-        if (IsKeyDown(KEY_DOWN) && !CheckCollisionRecs( A, C))
+        if (IsKeyDown(KEY_DOWN) && !CheckCollisionRecs( jogador->Up, C) && !CheckCollisionRecs( jogador->Right, C) && !CheckCollisionRecs( jogador->Left, C) && !CheckCollisionRecs( jogador->Down, C))
         {
             jogador->posicao_quadrado.y += 2.0f+2;
             jogador->contador += 2;
             jogador->animar++;
         } 
-        if (IsKeyDown(KEY_RIGHT) && !CheckCollisionRecs( A, C))
+        if (IsKeyDown(KEY_RIGHT) && !CheckCollisionRecs( jogador->Up, C) && !CheckCollisionRecs( jogador->Right, C) && !CheckCollisionRecs( jogador->Left, C) && !CheckCollisionRecs( jogador->Down, C))
         {
             jogador->posicao_quadrado.x += 2.0f+2;
             jogador->contador += 3;
             jogador->animar++;
         } 
-        if (IsKeyDown(KEY_LEFT) && !CheckCollisionRecs( A, C))
+        if (IsKeyDown(KEY_LEFT) && !CheckCollisionRecs( jogador->Up, C) && !CheckCollisionRecs( jogador->Right, C) && !CheckCollisionRecs( jogador->Left, C) && !CheckCollisionRecs( jogador->Down, C))
         {
             jogador->posicao_quadrado.x -= 2.0f+2;
             jogador->contador += 4;
             jogador->animar++;
         } 
-        if(IsKeyDown(KEY_UP) && IsKeyDown(KEY_RIGHT) && !CheckCollisionRecs( A, C) )
+        if(IsKeyDown(KEY_UP) && IsKeyDown(KEY_RIGHT) && !CheckCollisionRecs( jogador->Up, C) && !CheckCollisionRecs( jogador->Right, C) && !CheckCollisionRecs( jogador->Left, C) && !CheckCollisionRecs( jogador->Down, C))
         {
             jogador->posicao_quadrado.y -= 1.0f+1;
             jogador->contador += 1;
             jogador->animar++; 
             jogador->posicao_quadrado.x += 1.0f+1;
         }
-        if(IsKeyDown(KEY_UP) && IsKeyDown(KEY_LEFT) && !CheckCollisionRecs( A, C) )
+        if(IsKeyDown(KEY_UP) && IsKeyDown(KEY_LEFT) && !CheckCollisionRecs( jogador->Up, C)  && !CheckCollisionRecs( jogador->Right, C) && !CheckCollisionRecs( jogador->Left, C) && !CheckCollisionRecs( jogador->Down, C))
         {
             jogador->posicao_quadrado.y -= 1.0f+1;
             jogador->contador += 1;
             jogador->animar++; 
             jogador->posicao_quadrado.x -= 1.0f+1;
         }
-        if(IsKeyDown(KEY_DOWN) && IsKeyDown(KEY_RIGHT) && !CheckCollisionRecs( A, C) )
+        if(IsKeyDown(KEY_DOWN) && IsKeyDown(KEY_RIGHT) && !CheckCollisionRecs( jogador->Up, C) && !CheckCollisionRecs( jogador->Right, C) && !CheckCollisionRecs( jogador->Left, C) && !CheckCollisionRecs( jogador->Down, C))
         {
             jogador->posicao_quadrado.y += 1.0f+1;
             jogador->contador += 2;
             jogador->animar++;
             jogador->posicao_quadrado.x += 1.0f+1;
         }
-        if(IsKeyDown(KEY_DOWN) && IsKeyDown(KEY_LEFT) && !CheckCollisionRecs( A, C) )
+        if(IsKeyDown(KEY_DOWN) && IsKeyDown(KEY_LEFT) && !CheckCollisionRecs( jogador->Up, C) && !CheckCollisionRecs( jogador->Right, C) && !CheckCollisionRecs( jogador->Left, C) && !CheckCollisionRecs( jogador->Down, C))
         {
             jogador->posicao_quadrado.y += 1.0f+1;
             jogador->contador += 2;
             jogador->animar++;
             jogador->posicao_quadrado.x -= 1.0f+1;
         }
-        if(IsKeyReleased(KEY_UP) && !CheckCollisionRecs( A, C) )
+        if(IsKeyReleased(KEY_UP) && !CheckCollisionRecs( jogador->Up, C) && !CheckCollisionRecs( jogador->Right, C) && !CheckCollisionRecs( jogador->Left, C) && !CheckCollisionRecs( jogador->Down, C))
         {
             UnloadTexture(jogador->char_walk);
             jogador->char_walk = LoadTexture("img/prisioneiro_pose02.png");
             jogador->animar = 0;
         }
-        if(IsKeyReleased(KEY_DOWN) && !CheckCollisionRecs( A, C))
+        if(IsKeyReleased(KEY_DOWN) && !CheckCollisionRecs( jogador->Up, C) && !CheckCollisionRecs( jogador->Right, C) && !CheckCollisionRecs( jogador->Left, C) && !CheckCollisionRecs( jogador->Down, C))
         {
             UnloadTexture(jogador->char_walk);
             jogador->char_walk = LoadTexture("img/prisioneiro_pose01.png");
             jogador->animar = 0;
         }
-        if(IsKeyReleased(KEY_RIGHT) && !CheckCollisionRecs( A, C))
+        if(IsKeyReleased(KEY_RIGHT) && !CheckCollisionRecs( jogador->Up, C) && !CheckCollisionRecs( jogador->Right, C) && !CheckCollisionRecs( jogador->Left, C) && !CheckCollisionRecs( jogador->Down, C))
         {
             UnloadTexture(jogador->char_walk);
             jogador->char_walk = LoadTexture("img/prisioneiro_pose03.png");
             jogador->animar = 0;
         }
-        if(IsKeyReleased(KEY_LEFT) && !CheckCollisionRecs( A, C))
+        if(IsKeyReleased(KEY_LEFT) && !CheckCollisionRecs( jogador->Up, C) && !CheckCollisionRecs( jogador->Right, C) && !CheckCollisionRecs( jogador->Left, C) && !CheckCollisionRecs( jogador->Down, C))
         {
             UnloadTexture(jogador->char_walk);
             jogador->char_walk = LoadTexture("img/prisioneiro_pose04.png");
             jogador->animar = 0;
         }
     }
-    if ( (CheckCollisionRecs( A, C) && (IsKeyDown(KEY_RIGHT))) || (CheckCollisionRecs( A, C) && (IsKeyReleased(KEY_RIGHT))) )
-    {
-        jogador->posicao_quadrado.x = jogador->posicao_quadrado.x + (2.0f+8)*-1;
-    }
-    if ( (CheckCollisionRecs( A, C) && (IsKeyDown(KEY_UP))) || (CheckCollisionRecs( A, C) && (IsKeyReleased(KEY_UP))) )
+    if( CheckCollisionRecs( jogador->Up, C) )
     {
         jogador->posicao_quadrado.y = jogador->posicao_quadrado.y - (2.0f+8)*-1;
     }
-    if ( (CheckCollisionRecs( A, C) && (IsKeyDown(KEY_LEFT))) || (CheckCollisionRecs( A, C) && (IsKeyReleased(KEY_LEFT))) )
+    if( CheckCollisionRecs( jogador->Right, C) )
+    {
+        jogador->posicao_quadrado.x = jogador->posicao_quadrado.x + (2.0f+8)*-1;
+    }
+    if( CheckCollisionRecs( jogador->Left, C) )
     {
         jogador->posicao_quadrado.x = jogador->posicao_quadrado.x - (2.0f+8)*-1;
     }
-    if( (CheckCollisionRecs( A, C) && (IsKeyDown(KEY_DOWN))) || (CheckCollisionRecs( A, C) && (IsKeyReleased(KEY_DOWN))) )
+    if( CheckCollisionRecs( jogador->Down, C) )
     {
         jogador->posicao_quadrado.y = jogador->posicao_quadrado.y + (2.0f+8)*-1;
     }
-    if( CheckCollisionRecs( A, E) )
+    if( CheckCollisionRecs( jogador->Up, E) && IsKeyDown(KEY_E))
     {
-        *contador += 1;
+        contador[1] += 1;
+    }
+    else if( CheckCollisionRecs( jogador->Up, E) )
+    {
+        contador[0] += 1;
     }
 }
 
@@ -199,7 +212,7 @@ void draw_jogador(Jogador* jogador)
         jogador->x = 0;
         jogador->animar = 0;
     }   
-    //Rectangle rectangle_walk = { jogador->x, 0, jogador->frame_largura,(float) jogador->char_walk.height };
+
     jogador->rectangle_walk.x = jogador->x;
     jogador->rectangle_walk.y = 0;
     jogador->rectangle_walk.width = jogador->frame_largura;
@@ -223,7 +236,9 @@ int main()
     jogador.x = 0;
     jogador.animar = 0;
     jogador.contador = 0;
-    int contador = 0;
+    int contador[2];
+    contador[0] = 0;
+    contador[1] = 0;
 
     //camera
     Camera2D camera = { 0 };
@@ -232,7 +247,6 @@ int main()
     camera.rotation = 0.0f;
     camera.zoom = 2.0f;
     
-    printf("\nXDXDXD\n");
     //tela
     InitWindow(largura_tela,altura_tela,"teste");
     SetTargetFPS(60);
@@ -252,11 +266,12 @@ int main()
     Texture2D cela03 = LoadTexture("img/cela03.png");
 
     Texture2D porta_cela01 = LoadTexture("img/Porta_cela01.png");
-    Texture2D porta_cela02 = LoadTexture("img/Porta_cela02.png");
     Texture2D porta_cela03 = LoadTexture("img/Porta_cela03.png");
 
     Texture2D cama = LoadTexture("img/cama.png");
     Texture2D estante = LoadTexture("img/estante.png");
+    Texture2D mensagem_procurar = LoadTexture("img/mensagem_procurar.png");
+    Texture2D procurando = LoadTexture("img/procurando.png");
    
     jogador.posicao_quadrado.x = (float)altura_tela + 500;
     jogador.posicao_quadrado.y = (float)largura_tela + 600;
@@ -405,12 +420,12 @@ int main()
         colisao_cenario.colisao[27].y = 123 + 445;
         colisao_cenario.colisao[27].width = estante.width;
         colisao_cenario.colisao[27].height = estante.height;
-        //estante02
+        //estante05
         colisao_cenario.colisao[28].x = 323 + 216 + 295; 
         colisao_cenario.colisao[28].y = 123 + 445;
         colisao_cenario.colisao[28].width = estante.width;
         colisao_cenario.colisao[28].height = estante.height;
-        //estante03
+        //estante06
         colisao_cenario.colisao[29].x = 323 + 216 + 295*2; 
         colisao_cenario.colisao[29].y = 123 + 445;
         colisao_cenario.colisao[29].width = estante.width;
@@ -446,9 +461,57 @@ int main()
         colisao_cenario.interacao[5].y = 123 + 445;
         colisao_cenario.interacao[5].width = cama.width;
         colisao_cenario.interacao[5].height = cama.height;
+        //estante01.1
+        colisao_cenario.interacao[6].x = 323 + 216; 
+        colisao_cenario.interacao[6].y = 123 + 35;
+        colisao_cenario.interacao[6].width = estante.width;
+        colisao_cenario.interacao[6].height = estante.height;
+        //estante02.1
+        colisao_cenario.interacao[7].x = 323 + 216 + 295; 
+        colisao_cenario.interacao[7].y = 123 + 35;
+        colisao_cenario.interacao[7].width = estante.width;
+        colisao_cenario.interacao[7].height = estante.height;
+        //estante03.1
+        colisao_cenario.interacao[8].x = 323 + 216 + 295*2; 
+        colisao_cenario.interacao[8].y = 123 + 35;
+        colisao_cenario.interacao[8].width = estante.width;
+        colisao_cenario.interacao[8].height = estante.height;
+        //estante04.1
+        colisao_cenario.interacao[9].x = 323 + 216; 
+        colisao_cenario.interacao[9].y = 123 + 445 + 35;
+        colisao_cenario.interacao[9].width = estante.width;
+        colisao_cenario.interacao[9].height = estante.height;
+        //estante05.1
+        colisao_cenario.interacao[10].x = 323 + 216 + 295; 
+        colisao_cenario.interacao[10].y = 123 + 445 + 35;
+        colisao_cenario.interacao[10].width = estante.width;
+        colisao_cenario.interacao[10].height = estante.height;
+        //estante06.1
+        colisao_cenario.interacao[11].x = 323 + 216 + 295*2; 
+        colisao_cenario.interacao[11].y = 123 + 445 + 35;
+        colisao_cenario.interacao[11].width = estante.width;
+        colisao_cenario.interacao[11].height = estante.height;
     }
 
-    Rectangle movimentacao = { jogador.posicao_quadrado.x, jogador.posicao_quadrado.y, jogador.char_walk.width, jogador.char_walk.height};
+    jogador.Up.x = jogador.posicao_quadrado.x + 5;
+    jogador.Up.y = jogador.posicao_quadrado.y;
+    jogador.Up.width = jogador.char_walk.width/3;
+    jogador.Up.height = jogador.char_walk.height/7;
+
+    jogador.Right.x = jogador.posicao_quadrado.x + 20;
+    jogador.Right.y = jogador.posicao_quadrado.y + 10;
+    jogador.Right.width = jogador.char_walk.width/6;
+    jogador.Right.height = jogador.char_walk.height/1.5;
+
+    jogador.Left.x = jogador.posicao_quadrado.x;
+    jogador.Left.y = jogador.posicao_quadrado.y + 10;
+    jogador.Left.width = jogador.char_walk.width/6;
+    jogador.Left.height = jogador.char_walk.height/1.5;
+
+    jogador.Down.x = jogador.posicao_quadrado.x + 5;
+    jogador.Down.y = jogador.posicao_quadrado.y + 40;
+    jogador.Down.width = jogador.char_walk.width/3;
+    jogador.Down.height = jogador.char_walk.height/7;
 
     int Mapa1[24][16];
     for (int i = 0; i < 16; i++)
@@ -461,11 +524,43 @@ int main()
 
     while (!WindowShouldClose())
     {
-        personagem_movimentacao(&jogador, movimentacao, colisao_cenario.colisao, colisao_cenario.interacao, &contador);
+        personagem_movimentacao(&jogador, colisao_cenario.colisao, colisao_cenario.interacao, contador);
 
         camera.target.x = jogador.posicao_quadrado.x;
         camera.target.y = jogador.posicao_quadrado.y;
-        
+        //teste
+        jogador.Up.x = jogador.posicao_quadrado.x + 5;
+        jogador.Up.y = jogador.posicao_quadrado.y;
+        jogador.Up.width = jogador.char_walk.width/3;
+        jogador.Up.height = jogador.char_walk.height/7;
+
+        jogador.Right.x = jogador.posicao_quadrado.x + 20;
+        jogador.Right.y = jogador.posicao_quadrado.y + 10;
+        jogador.Right.width = jogador.char_walk.width/6;
+        jogador.Right.height = jogador.char_walk.height/1.5;
+
+        jogador.Left.x = jogador.posicao_quadrado.x;
+        jogador.Left.y = jogador.posicao_quadrado.y + 10;
+        jogador.Left.width = jogador.char_walk.width/6;
+        jogador.Left.height = jogador.char_walk.height/1.5;
+
+        jogador.Down.x = jogador.posicao_quadrado.x + 5;
+        jogador.Down.y = jogador.posicao_quadrado.y + 40;
+        jogador.Down.width = jogador.char_walk.width/3;
+        jogador.Down.height = jogador.char_walk.height/7;
+
+        if(jogador.animar > 0)
+        {
+            jogador.Up.width = jogador.char_walk.width/4;
+
+            jogador.Right.x = jogador.posicao_quadrado.x + 15;
+            jogador.Right.width = jogador.char_walk.width/8;
+
+            jogador.Left.width = jogador.char_walk.width/8;
+
+            jogador.Down.width = jogador.char_walk.width/4;
+        }
+               
         BeginDrawing();
 
             ClearBackground(WHITE);
@@ -479,7 +574,6 @@ int main()
                 }
 
                 //desenhando cenário
-                DrawFPS(30,30);
                 {
                     DrawTexture( parede01, 100+(1*40) + 20, (1*40) + 45, RAYWHITE);
                     DrawTexture( parede02, 100+(1*40) + 1030, (1*40) + 45, RAYWHITE);
@@ -534,24 +628,19 @@ int main()
                     DrawTexture( estante, 323 + 216 + 295, 123 + 445, GRAY);
                     DrawTexture( estante, 323 + 216 + 295*2 , 123 + 445, GRAY);
                 }
-
                 draw_jogador(&jogador);
+                DrawFPS(jogador.posicao_quadrado.x - 190,jogador.posicao_quadrado.y - 270);
 
-                movimentacao.x = jogador.posicao_quadrado.x;
-                movimentacao.y = jogador.posicao_quadrado.y;
-                movimentacao.width = jogador.char_walk.width;
-                movimentacao.height = jogador.char_walk.height;
-                if( jogador.animar > 0 )
+                if (contador[1] > 0 )
                 {
-                    movimentacao.width = jogador.char_walk.width / 2;
+                    DrawTexture(procurando, jogador.posicao_quadrado.x - 40, jogador.posicao_quadrado.y - 20, RAYWHITE);
+                    contador[1] = 0;
                 }
-
-                if( contador > 0 )
+                else if( contador[0] > 0 )
                 {
-                    DrawText("Aperte E para procurar.", jogador.posicao_quadrado.x - 40, jogador.posicao_quadrado.y - 20, 10 , RED);
-                    contador = 0;
+                    DrawTexture(mensagem_procurar, jogador.posicao_quadrado.x - 40, jogador.posicao_quadrado.y - 20, RAYWHITE);
+                    contador[0] = 0;
                 }
-                
                 jogador.contador = 0;
             EndMode2D();
 
