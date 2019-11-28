@@ -1,6 +1,8 @@
 
 #include "raylib.h"
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
 typedef struct 
 {
@@ -18,6 +20,7 @@ typedef struct
     Rectangle Down;
     Rectangle Right;
     Rectangle Left;
+    int item;
 
 }Jogador;
 
@@ -25,38 +28,39 @@ typedef struct
 {
     Rectangle colisao[30];
     Rectangle interacao[12];
+    int chave;
 
 }Colisao_cenario;
 
-void personagem_movimentacao( Jogador* jogador , Rectangle B[], Rectangle D[], int contador[])
+void personagem_movimentacao( Jogador* jogador , Colisao_cenario* colisao_cenario, int contador[])
 {
     Rectangle C;
     Rectangle E;
 
     for( int i = 0 ; i < 30 ; i++ )
     {
-        if( CheckCollisionRecs( jogador->Up, B[i]) )
+        if( CheckCollisionRecs( jogador->Up, colisao_cenario->colisao[i] ) )
         {
-            C = B[i];
+            C = colisao_cenario->colisao[i];
         }
-        if( CheckCollisionRecs( jogador->Right, B[i]) )
+        if( CheckCollisionRecs( jogador->Right, colisao_cenario->colisao[i]) )
         {
-            C = B[i];
+            C = colisao_cenario->colisao[i];
         }
-        if( CheckCollisionRecs( jogador->Left, B[i]) )
+        if( CheckCollisionRecs( jogador->Left, colisao_cenario->colisao[i]) )
         {
-            C = B[i];
+            C = colisao_cenario->colisao[i];
         }
-        if( CheckCollisionRecs( jogador->Down, B[i]) )
+        if( CheckCollisionRecs( jogador->Down, colisao_cenario->colisao[i]) )
         {
-            C = B[i];
+            C = colisao_cenario->colisao[i];
         }
     }
     for( int i = 0 ; i < 12 ; i++ )
     {
-        if( CheckCollisionRecs( jogador->Up, D[i]) )
+        if( CheckCollisionRecs( jogador->Up, colisao_cenario->interacao[i]) )
         {
-            E = D[i];
+            E = colisao_cenario->interacao[i];
         }
     }
 
@@ -142,22 +146,42 @@ void personagem_movimentacao( Jogador* jogador , Rectangle B[], Rectangle D[], i
     if( CheckCollisionRecs( jogador->Up, C) )
     {
         jogador->posicao_quadrado.y = jogador->posicao_quadrado.y - (2.0f+8)*-1;
+        UnloadTexture(jogador->char_walk);
+        jogador->char_walk = LoadTexture("img/prisioneiro_pose02.png");
+        jogador->animar = 0;
     }
     if( CheckCollisionRecs( jogador->Right, C) )
     {
         jogador->posicao_quadrado.x = jogador->posicao_quadrado.x + (2.0f+8)*-1;
+        UnloadTexture(jogador->char_walk);
+        jogador->char_walk = LoadTexture("img/prisioneiro_pose03.png");
+        jogador->animar = 0;
     }
     if( CheckCollisionRecs( jogador->Left, C) )
     {
         jogador->posicao_quadrado.x = jogador->posicao_quadrado.x - (2.0f+8)*-1;
+        UnloadTexture(jogador->char_walk);
+        jogador->char_walk = LoadTexture("img/prisioneiro_pose04.png");
+        jogador->animar = 0;
     }
     if( CheckCollisionRecs( jogador->Down, C) )
     {
         jogador->posicao_quadrado.y = jogador->posicao_quadrado.y + (2.0f+8)*-1;
+        UnloadTexture(jogador->char_walk);
+        jogador->char_walk = LoadTexture("img/prisioneiro_pose01.png");
+        jogador->animar = 0;
     }
     if( CheckCollisionRecs( jogador->Up, E) && IsKeyDown(KEY_E))
     {
         contador[1] += 1;
+        for( int i = 0 ; i < 12 ; i++ )
+        {
+            if( CheckCollisionRecs( jogador->Up, colisao_cenario->interacao[i]) && colisao_cenario->chave == ( i + 1 ) && IsKeyDown(KEY_E) )
+            {
+                jogador->item += 1;
+                colisao_cenario->chave = 0;
+            }
+        }
     }
     else if( CheckCollisionRecs( jogador->Up, E) )
     {
@@ -227,6 +251,8 @@ void draw_jogador(Jogador* jogador)
 
 int main() 
 {
+    srand(time(NULL));
+
     //variáveis de tela
     int largura_tela = GetScreenWidth();
     int altura_tela = GetScreenHeight();
@@ -236,6 +262,7 @@ int main()
     jogador.x = 0;
     jogador.animar = 0;
     jogador.contador = 0;
+    jogador.item = 0;
     int contador[2];
     contador[0] = 0;
     contador[1] = 0;
@@ -272,6 +299,8 @@ int main()
     Texture2D estante = LoadTexture("img/estante.png");
     Texture2D mensagem_procurar = LoadTexture("img/mensagem_procurar.png");
     Texture2D procurando = LoadTexture("img/procurando.png");
+    Texture2D key = LoadTexture("img/key.png");
+    Texture2D chave_encontrada = LoadTexture("img/Chave_encontrada.png");
    
     jogador.posicao_quadrado.x = (float)altura_tela + 500;
     jogador.posicao_quadrado.y = (float)largura_tela + 600;
@@ -493,6 +522,11 @@ int main()
         colisao_cenario.interacao[11].height = estante.height;
     }
 
+    colisao_cenario.chave = 0;
+    colisao_cenario.chave = rand()%12 + 1;
+
+    printf("\n%i\n",colisao_cenario.chave);
+
     jogador.Up.x = jogador.posicao_quadrado.x + 5;
     jogador.Up.y = jogador.posicao_quadrado.y;
     jogador.Up.width = jogador.char_walk.width/3;
@@ -524,7 +558,7 @@ int main()
 
     while (!WindowShouldClose())
     {
-        personagem_movimentacao(&jogador, colisao_cenario.colisao, colisao_cenario.interacao, contador);
+        personagem_movimentacao(&jogador, &colisao_cenario, contador);
 
         camera.target.x = jogador.posicao_quadrado.x;
         camera.target.y = jogador.posicao_quadrado.y;
@@ -643,6 +677,11 @@ int main()
                 }
                 jogador.contador = 0;
             EndMode2D();
+            if( jogador.item == 1 )
+            {
+                DrawTexture( key, largura_tela/2 + 50, altura_tela/2 + 50, RAYWHITE);
+                DrawTexture(chave_encontrada, jogador.posicao_quadrado.x - 40, jogador.posicao_quadrado.y - 20, RAYWHITE);
+            }
 
         EndDrawing();
     }
