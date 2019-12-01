@@ -27,7 +27,7 @@ typedef struct
 typedef struct
 {
     Rectangle colisao[30];
-    Rectangle interacao[12];
+    Rectangle interacao[13];
     int chave;
 
 }Colisao_cenario;
@@ -187,6 +187,11 @@ void personagem_movimentacao( Jogador* jogador , Colisao_cenario* colisao_cenari
     {
         contador[0] += 1;
     }
+    if( jogador->item == 1 && CheckCollisionRecs( jogador->Up, colisao_cenario->interacao[12]) && IsKeyDown(KEY_E) ) 
+    {
+        contador[2] += 1;
+        jogador->item = 0;
+    }
 }
 
 void draw_jogador(Jogador* jogador)
@@ -263,10 +268,12 @@ int main()
     jogador.animar = 0;
     jogador.contador = 0;
     jogador.item = 0;
-    int contador[2];
+    int contador[3];
     contador[0] = 0;
     contador[1] = 0;
+    contador[2] = 0;
 
+    printf("\n%i\n", contador[2]);
     //camera
     Camera2D camera = { 0 };
     camera.target = (Vector2){ jogador.posicao_quadrado.x + 2.0f+2, jogador.posicao_quadrado.y + 2.0f+2 };
@@ -520,12 +527,15 @@ int main()
         colisao_cenario.interacao[11].y = 123 + 445 + 35;
         colisao_cenario.interacao[11].width = estante.width;
         colisao_cenario.interacao[11].height = estante.height;
+        //porta_saida
+        colisao_cenario.interacao[12].x = 238; 
+        colisao_cenario.interacao[12].y = 200 + 40;
+        colisao_cenario.interacao[12].width = porta_cela01.width;
+        colisao_cenario.interacao[12].height = porta_cela01.height;
     }
 
     colisao_cenario.chave = 0;
     colisao_cenario.chave = rand()%12 + 1;
-
-    printf("\n%i\n",colisao_cenario.chave);
 
     jogador.Up.x = jogador.posicao_quadrado.x + 5;
     jogador.Up.y = jogador.posicao_quadrado.y;
@@ -642,8 +652,15 @@ int main()
                     DrawTexture( porta_cela03, 100+(1*40) + 845 - 590 + 33, (1*40) + 487, RAYWHITE);
 
                     DrawTexture( cela03, 175, 200, RAYWHITE);
-                    DrawTexture( porta_cela01, 238, 200, RAYWHITE);
-
+                    if( contador[2] == 0 )
+                    {
+                        DrawTexture( porta_cela01, 238, 200, RAYWHITE);
+                    }
+                    else
+                    {
+                        DrawTexture( porta_cela03, 238, 200, RAYWHITE);
+                    }
+                    
                     DrawTexture( parede06, 100+(1*40) + 735 - 590, (1*40) + 486, RAYWHITE);
                     DrawTexture( parede06, 100+(1*40) + 735 - 295, (1*40) + 486, RAYWHITE);
                     DrawTexture( parede06, 100+(1*40) + 735, (1*40) + 486, RAYWHITE);
@@ -675,12 +692,20 @@ int main()
                     DrawTexture(mensagem_procurar, jogador.posicao_quadrado.x - 40, jogador.posicao_quadrado.y - 20, RAYWHITE);
                     contador[0] = 0;
                 }
+                if( contador[2] > 0 )
+                {
+                    colisao_cenario.colisao[23].height = porta_cela03.height;
+                    colisao_cenario.colisao[23].width = porta_cela03.width;
+                }
+                if( jogador.item == 1 )
+                {
+                    DrawTexture(chave_encontrada, jogador.posicao_quadrado.x - 40, jogador.posicao_quadrado.y - 20, RAYWHITE);
+                }
                 jogador.contador = 0;
             EndMode2D();
             if( jogador.item == 1 )
             {
-                DrawTexture( key, largura_tela/2 + 50, altura_tela/2 + 50, RAYWHITE);
-                DrawTexture(chave_encontrada, jogador.posicao_quadrado.x - 40, jogador.posicao_quadrado.y - 20, RAYWHITE);
+                DrawTexture( key, largura_tela/2 + 1240, altura_tela/2 + 625, RAYWHITE);
             }
 
         EndDrawing();
