@@ -1,8 +1,19 @@
-
 #include "raylib.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <string.h>
+
+typedef struct
+{
+   int x;
+   int y;
+   Rectangle imagem;
+   int campoDeVisao;
+   int movimento;
+   int sentidoCampoDeVisao;
+   
+}Guardas;
 
 typedef struct 
 {
@@ -31,6 +42,105 @@ typedef struct
     int chave;
 
 }Colisao_cenario;
+
+
+void moverGuardas(Texture2D* imagem,Guardas* guarda,char direcao[12],int comecoTela,int fimTela){
+    
+    if(strcmp(direcao,"horizontal")==0){
+        
+       if(guarda->x+imagem->width/3 == fimTela ){
+            
+            guarda->movimento=-guarda->movimento;
+            guarda->imagem.y=3*imagem->height/4;
+            guarda->sentidoCampoDeVisao= -guarda->sentidoCampoDeVisao;
+            
+        }else if (guarda->x == comecoTela){
+            
+            guarda->imagem.y=2*imagem->height/4;   
+            guarda->movimento=-guarda->movimento;
+            guarda->sentidoCampoDeVisao= -guarda->sentidoCampoDeVisao;
+            
+        }
+            
+            guarda->x+=guarda->movimento;
+        
+        
+    }else{
+             
+        if(guarda->y+imagem->height/4 == 0){
+            
+            guarda->movimento=-guarda->movimento;
+            guarda->imagem.y=imagem->height/4;
+            guarda->sentidoCampoDeVisao= -guarda->sentidoCampoDeVisao;
+            
+        }else if (guarda->y == 0){
+            
+            guarda->imagem.y=4*imagem->height/4;   
+            guarda->movimento=-guarda->movimento;
+            guarda->sentidoCampoDeVisao= -guarda->sentidoCampoDeVisao;
+            
+        }
+            
+            guarda->y+=guarda->movimento;
+      
+    }
+       
+}
+
+void desenharGuardas(Texture2D* imagem,Guardas* guarda){
+    
+    DrawTextureRec(*imagem,guarda->imagem,(Vector2){ guarda->x,guarda->y},WHITE);
+    
+}
+
+void desenharCampoDeVisao(Guardas* guarda,char direcao[12],Texture2D* imagem){
+
+    if(strcmp(direcao,"horizontal")==0){
+        if(guarda->sentidoCampoDeVisao>0){
+        
+        DrawRectangle(guarda->x+(guarda->sentidoCampoDeVisao*imagem->width/3),guarda->y,guarda->campoDeVisao,imagem->height/4,RED);	
+        
+        }else{
+            
+            DrawRectangle(guarda->x+(guarda->sentidoCampoDeVisao*guarda->campoDeVisao),guarda->y,guarda->campoDeVisao,imagem->height/4,RED);	
+        }
+        
+}else{
+    
+     DrawRectangle(guarda->x,guarda->y+(guarda->sentidoCampoDeVisao*imagem->height/4),imagem->height/4,guarda->campoDeVisao,RED);
+}
+
+    }
+
+
+void seEntrouNoCampoDeVisao(Guardas* guarda,Texture2D* imagem,char direcao[12],Jogador* jogador){
+    
+      if(strcmp(direcao,"horizontal")==0){
+      
+        if(guarda->sentidoCampoDeVisao > 0){
+       
+           
+            if( jogador-> posicao_quadrado.x + jogador->char_walk.width/2 >= guarda->x && jogador->posicao_quadrado.x - jogador->char_walk.width/2 < guarda->x + guarda->campoDeVisao && jogador->posicao_quadrado.y + jogador->char_walk.height >= guarda->y && jogador->posicao_quadrado.y < guarda->y + imagem->height/4 ){
+            
+                DrawText("Perdeu",600,300,50,RED);
+          
+                }
+       
+        }else {
+            
+            if(jogador->posicao_quadrado.x+jogador->char_walk.width/2 >= guarda->x-guarda->campoDeVisao  && jogador->posicao_quadrado.x < guarda->x+imagem->width/3 && jogador->posicao_quadrado.y + jogador->char_walk.height >=guarda->y && jogador->posicao_quadrado.y<guarda->y+imagem->height/4){
+           
+            DrawText("Perdeu",600,300,50,RED);
+       }
+       
+}
+}else if(strcmp(direcao,"vertical")){
+    
+    
+}else{    } 
+
+}
+
 
 void personagem_movimentacao( Jogador* jogador , Colisao_cenario* colisao_cenario, int contador[])
 {
@@ -258,10 +368,17 @@ int main()
 {
     srand(time(NULL));
 
+     int frameAtual=0;
+    int tempoDoFrame=0;
+
     //variáveis de tela
     int largura_tela = GetScreenWidth();
     int altura_tela = GetScreenHeight();
     
+    int comecoLarguraAreaJogo=200;
+    int fimLarguraAreaJogo=1150;
+    
+
     //jogador
     Jogador jogador;
     jogador.x = 0;
@@ -284,6 +401,7 @@ int main()
     //tela
     InitWindow(largura_tela,altura_tela,"teste");
     SetTargetFPS(60);
+    
     ToggleFullscreen();
 
     //texturas
@@ -308,10 +426,42 @@ int main()
     Texture2D procurando = LoadTexture("img/procurando.png");
     Texture2D key = LoadTexture("img/key.png");
     Texture2D chave_encontrada = LoadTexture("img/Chave_encontrada.png");
-   
+    
+    Texture2D imagemGuardas = LoadTexture("img/guardas.png");
+
     jogador.posicao_quadrado.x = (float)altura_tela + 500;
     jogador.posicao_quadrado.y = (float)largura_tela + 600;
     jogador.char_walk = LoadTexture("img/prisioneiro_pose02.png");
+
+    
+    //INICIANDO GUARADA 1
+      Guardas guarda1;
+      guarda1.x=comecoLarguraAreaJogo;
+      guarda1.y=360;
+      guarda1.campoDeVisao=100;
+      guarda1.movimento =-5;
+      guarda1.imagem=(Rectangle){0.0f,0.0f,imagemGuardas.width/3,imagemGuardas.height/4};
+      guarda1.imagem.y=2*imagemGuardas.height/4;   
+      guarda1.sentidoCampoDeVisao= -1;
+        
+    // FIM INICIANDO GURADA 1
+    
+    
+    //INICIANDO GUARADA 2
+      Guardas guarda2;
+      guarda2.x=fimLarguraAreaJogo-imagemGuardas.width/3;
+      guarda2.y=350+imagemGuardas.height/4+50;
+      guarda2.campoDeVisao=250;
+      guarda2.movimento =5
+;
+      guarda2.imagem=(Rectangle){0.0f,0.0f,imagemGuardas.width/3,imagemGuardas.height/4};
+      guarda2.imagem.y=imagemGuardas.height/4;
+      guarda2.sentidoCampoDeVisao =1;
+    
+    
+    // FIM INICIANDO GURADA 2
+
+
 
     //Colisao com o cenario
     Colisao_cenario colisao_cenario;
@@ -566,7 +716,28 @@ int main()
         }   
     } 
 
-    while (!WindowShouldClose())
+    while (!WindowShouldClose()){
+
+    // MUDA FRAME DOS GUARDAS;
+        tempoDoFrame++;
+        
+        if(tempoDoFrame >= 10){
+            
+            tempoDoFrame=0;
+            
+            frameAtual++;
+            
+            if(frameAtual > 3){
+                frameAtual=0;
+            }
+            
+            guarda1.imagem.x=(float) frameAtual*imagemGuardas.width/3;
+            guarda2.imagem.x=(float) frameAtual*imagemGuardas.width/3;
+        }   
+    
+    
+    //FIM MUDA FRAME DOS GUARDAS
+
     {
         personagem_movimentacao(&jogador, &colisao_cenario, contador);
 
@@ -619,6 +790,10 @@ int main()
 
                 //desenhando cenário
                 {
+
+                    
+
+
                     DrawTexture( parede01, 100+(1*40) + 20, (1*40) + 45, RAYWHITE);
                     DrawTexture( parede02, 100+(1*40) + 1030, (1*40) + 45, RAYWHITE);
                     DrawTexture( parede03, 100+(1*40) + 60, (1*40) + 45, RAYWHITE);
@@ -702,6 +877,25 @@ int main()
                     DrawTexture(chave_encontrada, jogador.posicao_quadrado.x - 40, jogador.posicao_quadrado.y - 20, RAYWHITE);
                 }
                 jogador.contador = 0;
+
+            //LOGICA GUARDA 1
+            
+                moverGuardas(&imagemGuardas,&guarda1,"horizontal",comecoLarguraAreaJogo,fimLarguraAreaJogo);
+                desenharGuardas(&imagemGuardas,&guarda1);
+                desenharCampoDeVisao(&guarda1,"horizontal",&imagemGuardas);
+                seEntrouNoCampoDeVisao(&guarda1,&imagemGuardas,"horizontal",&jogador);
+                
+            
+            // FIM LOGICA GUADA 1
+            
+            
+            // LOGICA GURADA 2
+     
+                moverGuardas(&imagemGuardas,&guarda2,"horizontal",comecoLarguraAreaJogo,fimLarguraAreaJogo);
+                desenharGuardas(&imagemGuardas,&guarda2);
+                desenharCampoDeVisao(&guarda2,"horizontal",&imagemGuardas);
+                seEntrouNoCampoDeVisao(&guarda2,&imagemGuardas,"horizontal",&jogador);
+     
             EndMode2D();
             if( jogador.item == 1 )
             {
@@ -710,6 +904,8 @@ int main()
 
         EndDrawing();
     }
+    }
+        UnloadTexture(imagemGuardas);
 
     CloseWindow();
     
