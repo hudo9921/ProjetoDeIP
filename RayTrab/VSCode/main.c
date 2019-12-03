@@ -1,19 +1,10 @@
 #include "raylib.h"
-#include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
+#include "guardas.h"
 
-typedef struct
-{
-   int x;
-   int y;
-   Rectangle imagem;
-   int campoDeVisao;
-   int movimento;
-   int sentidoCampoDeVisao;
-   
-}Guardas;
+
 
 typedef struct 
 {
@@ -42,104 +33,6 @@ typedef struct
     int chave;
 
 }Colisao_cenario;
-
-
-void moverGuardas(Texture2D* imagem,Guardas* guarda,char direcao[12],int comecoTela,int fimTela){
-    
-    if(strcmp(direcao,"horizontal")==0){
-        
-       if(guarda->x+imagem->width/3 == fimTela ){
-            
-            guarda->movimento=-guarda->movimento;
-            guarda->imagem.y=3*imagem->height/4;
-            guarda->sentidoCampoDeVisao= -guarda->sentidoCampoDeVisao;
-            
-        }else if (guarda->x == comecoTela){
-            
-            guarda->imagem.y=2*imagem->height/4;   
-            guarda->movimento=-guarda->movimento;
-            guarda->sentidoCampoDeVisao= -guarda->sentidoCampoDeVisao;
-            
-        }
-            
-            guarda->x+=guarda->movimento;
-        
-        
-    }else{
-             
-        if(guarda->y+imagem->height/4 == 0){
-            
-            guarda->movimento=-guarda->movimento;
-            guarda->imagem.y=imagem->height/4;
-            guarda->sentidoCampoDeVisao= -guarda->sentidoCampoDeVisao;
-            
-        }else if (guarda->y == 0){
-            
-            guarda->imagem.y=4*imagem->height/4;   
-            guarda->movimento=-guarda->movimento;
-            guarda->sentidoCampoDeVisao= -guarda->sentidoCampoDeVisao;
-            
-        }
-            
-            guarda->y+=guarda->movimento;
-      
-    }
-       
-}
-
-void desenharGuardas(Texture2D* imagem,Guardas* guarda){
-    
-    DrawTextureRec(*imagem,guarda->imagem,(Vector2){ guarda->x,guarda->y},WHITE);
-    
-}
-
-void desenharCampoDeVisao(Guardas* guarda,char direcao[12],Texture2D* imagem){
-
-    if(strcmp(direcao,"horizontal")==0){
-        if(guarda->sentidoCampoDeVisao>0){
-        
-        DrawRectangle(guarda->x+(guarda->sentidoCampoDeVisao*imagem->width/3),guarda->y,guarda->campoDeVisao,imagem->height/4,RED);	
-        
-        }else{
-            
-            DrawRectangle(guarda->x+(guarda->sentidoCampoDeVisao*guarda->campoDeVisao),guarda->y,guarda->campoDeVisao,imagem->height/4,RED);	
-        }
-        
-}else{
-    
-     DrawRectangle(guarda->x,guarda->y+(guarda->sentidoCampoDeVisao*imagem->height/4),imagem->height/4,guarda->campoDeVisao,RED);
-}
-
-    }
-
-
-void seEntrouNoCampoDeVisao(Guardas* guarda,Texture2D* imagem,char direcao[12],Jogador* jogador){
-    
-      if(strcmp(direcao,"horizontal")==0){
-      
-        if(guarda->sentidoCampoDeVisao > 0){
-       
-           
-            if( jogador-> posicao_quadrado.x + jogador->char_walk.width/2 >= guarda->x && jogador->posicao_quadrado.x - jogador->char_walk.width/2 < guarda->x + guarda->campoDeVisao && jogador->posicao_quadrado.y + jogador->char_walk.height >= guarda->y && jogador->posicao_quadrado.y < guarda->y + imagem->height/4 ){
-            
-                DrawText("Perdeu",600,300,50,RED);
-          
-                }
-       
-        }else {
-            
-            if(jogador->posicao_quadrado.x+jogador->char_walk.width/2 >= guarda->x-guarda->campoDeVisao  && jogador->posicao_quadrado.x < guarda->x+imagem->width/3 && jogador->posicao_quadrado.y + jogador->char_walk.height >=guarda->y && jogador->posicao_quadrado.y<guarda->y+imagem->height/4){
-           
-            DrawText("Perdeu",600,300,50,RED);
-       }
-       
-}
-}else if(strcmp(direcao,"vertical")){
-    
-    
-}else{    } 
-
-}
 
 
 void personagem_movimentacao( Jogador* jogador , Colisao_cenario* colisao_cenario, int contador[])
@@ -390,7 +283,6 @@ int main()
     contador[1] = 0;
     contador[2] = 0;
 
-    printf("\n%i\n", contador[2]);
     //camera
     Camera2D camera = { 0 };
     camera.target = (Vector2){ jogador.posicao_quadrado.x + 2.0f+2, jogador.posicao_quadrado.y + 2.0f+2 };
@@ -883,7 +775,7 @@ int main()
                 moverGuardas(&imagemGuardas,&guarda1,"horizontal",comecoLarguraAreaJogo,fimLarguraAreaJogo);
                 desenharGuardas(&imagemGuardas,&guarda1);
                 desenharCampoDeVisao(&guarda1,"horizontal",&imagemGuardas);
-                seEntrouNoCampoDeVisao(&guarda1,&imagemGuardas,"horizontal",&jogador);
+                seEntrouNoCampoDeVisao(&guarda1,&imagemGuardas,"horizontal",jogador.posicao_quadrado.x,jogador.posicao_quadrado.y,jogador.char_walk);
                 
             
             // FIM LOGICA GUADA 1
@@ -894,13 +786,19 @@ int main()
                 moverGuardas(&imagemGuardas,&guarda2,"horizontal",comecoLarguraAreaJogo,fimLarguraAreaJogo);
                 desenharGuardas(&imagemGuardas,&guarda2);
                 desenharCampoDeVisao(&guarda2,"horizontal",&imagemGuardas);
-                seEntrouNoCampoDeVisao(&guarda2,&imagemGuardas,"horizontal",&jogador);
+                seEntrouNoCampoDeVisao(&guarda2,&imagemGuardas,"horizontal",jogador.posicao_quadrado.x,jogador.posicao_quadrado.y,jogador.char_walk);
+                
+            //FIM LOGICA GUARDA 2;
+     
      
             EndMode2D();
+            
+            
             if( jogador.item == 1 )
             {
                 DrawTexture( key, largura_tela/2 + 1240, altura_tela/2 + 625, RAYWHITE);
             }
+
 
         EndDrawing();
     }
