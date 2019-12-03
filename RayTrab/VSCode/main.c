@@ -26,6 +26,17 @@ typedef struct
 
 }Jogador;
 
+typedef struct{
+    
+    
+    int segundos;
+    int minutos;
+    int tempo;
+    
+    
+}Cronometro;
+
+
 typedef struct
 {
     Rectangle colisao[30];
@@ -271,6 +282,16 @@ int main()
     int comecoLarguraAreaJogo=200;
     int fimLarguraAreaJogo=1150;
     
+    //INICIANDO AS VARIAVEIS DO CRONOMETRO
+    
+    Cronometro cronometro;
+    cronometro.tempo=0;
+    cronometro.segundos=0;
+    cronometro.minutos=0;
+    
+    
+    
+    // FIM DAS VARIAVEOS DO CRONOMETRO
 
     //jogador
     Jogador jogador;
@@ -630,6 +651,30 @@ int main()
     
     //FIM MUDA FRAME DOS GUARDAS
 
+    // LOGICA DO CRONOMETRO
+    
+        cronometro.tempo++;
+        
+        
+        if(cronometro.tempo%60==0){
+            
+            cronometro.tempo=0;
+            cronometro.segundos++;
+            
+            if(cronometro.segundos%60==0){
+                
+                cronometro.segundos=0;
+                cronometro.minutos++;
+                
+            }
+            
+        }
+        
+    
+    //FIM LOGICA CRONOMETRO
+
+
+
     {
         personagem_movimentacao(&jogador, &colisao_cenario, contador);
 
@@ -789,9 +834,11 @@ int main()
                 seEntrouNoCampoDeVisao(&guarda2,&imagemGuardas,"horizontal",jogador.posicao_quadrado.x,jogador.posicao_quadrado.y,jogador.char_walk);
                 
             //FIM LOGICA GUARDA 2;
-     
+            
+            
      
             EndMode2D();
+            DrawText(FormatText("%2i:%2i",cronometro.minutos,cronometro.segundos),0,0,50,LIGHTGRAY);
             
             
             if( jogador.item == 1 )
