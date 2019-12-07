@@ -3,6 +3,7 @@
 #include <time.h>
 #include <string.h>
 #include "guardas.h"
+#include "portas.h"
 
 
 
@@ -46,7 +47,7 @@ typedef struct
 }Colisao_cenario;
 
 
-void personagem_movimentacao( Jogador* jogador , Colisao_cenario* colisao_cenario, int contador[])
+void personagem_movimentacao( Jogador* jogador , Colisao_cenario* colisao_cenario, int contador[],Portas* porta)
 {
     Rectangle C;
     Rectangle E;
@@ -205,6 +206,9 @@ void personagem_movimentacao( Jogador* jogador , Colisao_cenario* colisao_cenari
     {
         contador[2] += 1;
         jogador->item = 0;
+        porta->estadoDaPorta=-porta->estadoDaPorta;
+        
+        
     }
 }
 
@@ -268,11 +272,35 @@ void draw_jogador(Jogador* jogador)
         RAYWHITE);;
 }
 
+
+void passouDeFase(Jogador* jogador,Portas* porta,int* estadoFase){
+    
+    if(jogador->posicao_quadrado.x >= porta->imagem.width &&  jogador->posicao_quadrado.x <= porta->imagem.width+porta->x && jogador->posicao_quadrado.y <= porta->imagem.height/2+porta->y){
+        
+
+        *estadoFase=1;
+        
+        
+    }else{
+        
+        
+    *estadoFase=0;        
+    }
+    
+    
+    
+    
+}
+
+
+
 int main() 
 {
     srand(time(NULL));
 
-     int frameAtual=0;
+    int estadoFaseUm=0; // acabouFaseUm=0,jogo continua; acabouFaseUm=1,jogador passou de fase; acabouFaseUm=-1, jogador perdeu a fase; 
+
+    int frameAtual=0;
     int tempoDoFrame=0;
 
     //variáveis de tela
@@ -364,7 +392,7 @@ int main()
       Guardas guarda2;
       guarda2.x=fimLarguraAreaJogo-imagemGuardas.width/3;
       guarda2.y=350+imagemGuardas.height/4+50;
-      guarda2.campoDeVisao=250;
+      guarda2.campoDeVisao=100;
       guarda2.movimento =5
 ;
       guarda2.imagem=(Rectangle){0.0f,0.0f,imagemGuardas.width/3,imagemGuardas.height/4};
@@ -373,6 +401,20 @@ int main()
     
     
     // FIM INICIANDO GURADA 2
+    
+    
+    //INICIANDO PORTA DE SAIDA
+    
+        Texture2D imagemPorta=LoadTexture("img/porta.png");
+        
+        Portas portaSaida;
+        portaSaida.x=comecoLarguraAreaJogo;
+        portaSaida.y=95;
+        portaSaida.estadoDaPorta=1;
+        portaSaida.imagem=(Rectangle) {0.0f,0.0f,imagemPorta.width,imagemPorta.height/2};
+        
+    
+    //FIM INICIANDO PORTA DE SAIDA
 
 
 
@@ -631,6 +673,8 @@ int main()
 
     while (!WindowShouldClose()){
 
+        while(estadoFaseUm==0){ 
+        
     // MUDA FRAME DOS GUARDAS;
         tempoDoFrame++;
         
@@ -676,7 +720,7 @@ int main()
 
 
     {
-        personagem_movimentacao(&jogador, &colisao_cenario, contador);
+        personagem_movimentacao(&jogador, &colisao_cenario, contador,&portaSaida);
 
         camera.target.x = jogador.posicao_quadrado.x;
         camera.target.y = jogador.posicao_quadrado.y;
@@ -716,7 +760,7 @@ int main()
         BeginDrawing();
 
             ClearBackground(WHITE);
-            BeginMode2D(camera);
+           // BeginMode2D(camera);
                 for (int i = 0; i < 15; i++)
                 {
                     for (int j = 0; j <24 ; j++)
@@ -728,7 +772,6 @@ int main()
                 //desenhando cenário
                 {
 
-                    
 
 
                     DrawTexture( parede01, 100+(1*40) + 20, (1*40) + 45, RAYWHITE);
@@ -820,8 +863,6 @@ int main()
                 moverGuardas(&imagemGuardas,&guarda1,"horizontal",comecoLarguraAreaJogo,fimLarguraAreaJogo);
                 desenharGuardas(&imagemGuardas,&guarda1);
                 desenharCampoDeVisao(&guarda1,"horizontal",&imagemGuardas);
-                seEntrouNoCampoDeVisao(&guarda1,&imagemGuardas,"horizontal",jogador.posicao_quadrado.x,jogador.posicao_quadrado.y,jogador.char_walk);
-                
             
             // FIM LOGICA GUADA 1
             
@@ -831,13 +872,15 @@ int main()
                 moverGuardas(&imagemGuardas,&guarda2,"horizontal",comecoLarguraAreaJogo,fimLarguraAreaJogo);
                 desenharGuardas(&imagemGuardas,&guarda2);
                 desenharCampoDeVisao(&guarda2,"horizontal",&imagemGuardas);
-                seEntrouNoCampoDeVisao(&guarda2,&imagemGuardas,"horizontal",jogador.posicao_quadrado.x,jogador.posicao_quadrado.y,jogador.char_walk);
-                
             //FIM LOGICA GUARDA 2;
             
+            //LOGICA Porta
+                
+                desenharPorta(&portaSaida,imagemPorta);
             
+            //FIM LOGICA PORTA
      
-            EndMode2D();
+           // EndMode2D();
             DrawText(FormatText("%2i:%2i",cronometro.minutos,cronometro.segundos),0,0,50,LIGHTGRAY);
             
             
@@ -848,8 +891,43 @@ int main()
 
 
         EndDrawing();
+      
+       //VERIFICA O ESTADO DO FASE 1
+      
+       passouDeFase(&jogador,&portaSaida,&estadoFaseUm);
+       
+       seEntrouNoCampoDeVisao(&guarda1,&imagemGuardas,"horizontal",jogador.posicao_quadrado.x,jogador.posicao_quadrado.y,jogador.char_walk,&estadoFaseUm); // verifica se emtrou na area do guarda 1
+                
+       seEntrouNoCampoDeVisao(&guarda2,&imagemGuardas,"horizontal",jogador.posicao_quadrado.x,jogador.posicao_quadrado.y,jogador.char_walk,&estadoFaseUm); // verifica se emtrou na area do guarda 2
+                
+      
+      //FIM DA VERIFICAO DO ESTADO DA FASE 1
     }
-    }
+    
+    }//FIM WHILE(!acabouFaseUm) // while da fase 1
+    
+        
+           ClearBackground(RAYWHITE);    
+        BeginDrawing();
+             
+             if(estadoFaseUm == 1){
+                 
+                 DrawText("Passou da Fase 1",600,600,50,GREEN);
+                 
+             }else{
+                 
+                 DrawText("Perdeu",600,600,50,GREEN);
+                 
+             }
+        
+            
+        
+        EndDrawing();
+    
+    
+    
+    }//FIM WHILE(!WINDOWSHOULDCLOSE())
+        
         UnloadTexture(imagemGuardas);
 
     CloseWindow();

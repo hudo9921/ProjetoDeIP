@@ -1,4 +1,5 @@
 #include "raylib.h"
+#include <string.h>
 #ifndef GUARDAS_H
 #define GUARDAS_H
 
@@ -89,7 +90,7 @@ void desenharCampoDeVisao(Guardas* guarda,char direcao[12],Texture2D* imagem){
     }
 
 
-void seEntrouNoCampoDeVisao(Guardas* guarda,Texture2D* imagem,char direcao[12],int xJogador,int yJogador, Texture2D imagemJogador){
+void seEntrouNoCampoDeVisao(Guardas* guarda,Texture2D* imagem,char direcao[12],int xJogador,int yJogador, Texture2D imagemJogador,int* estadoFase){
     
       if(strcmp(direcao,"horizontal")==0){
       
@@ -97,23 +98,33 @@ void seEntrouNoCampoDeVisao(Guardas* guarda,Texture2D* imagem,char direcao[12],i
        
            
             if(  xJogador + imagemJogador.width/2 >= guarda->x && xJogador - imagemJogador.width/2 < guarda->x + guarda->campoDeVisao && yJogador + imagemJogador.height >= guarda->y && yJogador < guarda->y + imagem->height/4 ){
-            
-                DrawText("Perdeu",600,300,50,RED);
           
-                }
+          DrawText("Perdeu",600,600,50,WHITE);
+                *estadoFase=-10;
+            
+            }
        
         }else {
             
             if(xJogador + imagemJogador.width/2 >= guarda->x-guarda->campoDeVisao  && xJogador < guarda->x+imagem->width/3 && yJogador + imagemJogador.height >= guarda->y && yJogador < guarda->y+imagem->height/4){
            
-            DrawText("Perdeu",600,300,50,RED);
+           DrawText("Perdeu",600,600,50,WHITE);
+                
+            *estadoFase=-10;
+            
        }
        
 }
 }else if(strcmp(direcao,"vertical")){
     
     
-}else{    } 
+}else{   
+
+    
+  *estadoFase=0;
+
+
+ } 
 
 }
 
