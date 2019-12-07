@@ -343,6 +343,12 @@ int main()
     InitWindow(largura_tela,altura_tela,"teste");
     SetTargetFPS(60);
     
+    InitAudioDevice();
+    
+    //Musica do Jogo
+    Music somJogo = LoadMusicStream("audios/audioZueira.mp3"); //carrega o som no jogo
+    PlayMusicStream(somJogo); //toca a musica
+    //
     ToggleFullscreen();
 
     //texturas
@@ -673,7 +679,11 @@ int main()
 
     while (!WindowShouldClose()){
 
+        
+        
         while(estadoFaseUm==0){ 
+        
+          UpdateMusicStream(somJogo);
         
     // MUDA FRAME DOS GUARDAS;
         tempoDoFrame++;
@@ -929,8 +939,9 @@ int main()
     }//FIM WHILE(!WINDOWSHOULDCLOSE())
         
         UnloadTexture(imagemGuardas);
-
-    CloseWindow();
+        UnloadMusicStream(somJogo);
+CloseAudioDevice(); 
+ CloseWindow();
     
     return 0;
 }
