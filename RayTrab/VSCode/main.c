@@ -30,7 +30,7 @@ void passouDeFaseUm(Jogador* jogador,Portas* porta,int* estadoFase){
 int main() 
 {
     
-   /*
+   
     srand(time(NULL));
 
     int estadoFaseUm=0; //estadoFaseUm=0,jogo continua; estadoFaseUm=1,jogador passou de fase; estadoFaseUm=-1, jogador perdeu a fase; 
@@ -693,8 +693,8 @@ CloseAudioDevice();
  
  CloseWindow();
  
-  */
-   
+  
+   /*
   int estadoFaseDois=0;
 InitWindow(GetScreenWidth(),GetScreenHeight(),"");
     SetTargetFPS(60);
@@ -724,6 +724,7 @@ InitWindow(GetScreenWidth(),GetScreenHeight(),"");
 EndDrawing();  
       }
    CloseWindow();
+    */
     
     return 0;
 

@@ -59,7 +59,7 @@ void comecarFaseDois(int* estadoFaseDois,int larguraTela,int alturaTela){
     Portas portaFinal;
     portaFinal.x=528;
     portaFinal.y=152-imagemPortaFinal.height;
-    portaFinal.estadoDaPorta =-1;
+    portaFinal.estadoDaPorta =1;
     portaFinal.imagem = (Rectangle){0.0f,0.0f,imagemPortaFinal.width,imagemPortaFinal.height};
     
     //FIM PORTA FINAL
@@ -362,7 +362,7 @@ void comecarFaseDois(int* estadoFaseDois,int larguraTela,int alturaTela){
 
       
 
-        while(!WindowShouldClose()){
+        while(*estadoFaseDois==0){
           
        //Atualização da fase 2
          
