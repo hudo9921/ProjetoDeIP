@@ -33,5 +33,21 @@ void desenharPorta(Portas* porta,Texture2D imagemPorta){
             DrawTextureRec(imagemPorta,porta->imagem,(Vector2){ porta->x , porta->y },WHITE);
             
     }
-    
 }
+    
+    void desenharPortaCela(Portas* porta,Texture2D imagemPorta){
+        
+        
+        if(porta->estadoDaPorta>0){
+            
+            DrawTextureRec(imagemPorta,porta->imagem,(Vector2){ porta->x , porta->y },WHITE);
+            
+            
+        }else{
+            
+            
+            
+        }
+        
+    }
+    

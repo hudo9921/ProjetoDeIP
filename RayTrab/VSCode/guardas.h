@@ -44,13 +44,13 @@ void moverGuardas(Texture2D* imagem,Guardas* guarda,char direcao[12],int comecoT
         
     }else{
              
-        if(guarda->y+imagem->height/4 == 0){
+        if(guarda->y+imagem->height/4 == fimTela){
             
             guarda->movimento=-guarda->movimento;
             guarda->imagem.y=imagem->height/4;
             guarda->sentidoCampoDeVisao= -guarda->sentidoCampoDeVisao;
             
-        }else if (guarda->y == 0){
+        }else if (guarda->y == comecoTela){
             
             guarda->imagem.y=4*imagem->height/4;   
             guarda->movimento=-guarda->movimento;
@@ -65,6 +65,7 @@ void moverGuardas(Texture2D* imagem,Guardas* guarda,char direcao[12],int comecoT
 }
 
 void desenharGuardas(Texture2D* imagem,Guardas* guarda){
+    
     
     DrawTextureRec(*imagem,guarda->imagem,(Vector2){ guarda->x,guarda->y},WHITE);
     
@@ -83,9 +84,17 @@ void desenharCampoDeVisao(Guardas* guarda,char direcao[12],Texture2D* imagem){
         }
         
 }else{
-    
-     DrawRectangle(guarda->x,guarda->y+(guarda->sentidoCampoDeVisao*imagem->height/4),imagem->height/4,guarda->campoDeVisao,RED);
-}
+    if(guarda->sentidoCampoDeVisao > 0 ){
+        
+        DrawRectangle(guarda->x-imagem->width/9,guarda->y+(guarda->sentidoCampoDeVisao*imagem->height/4),imagem->height/4,guarda->campoDeVisao,GREEN);
+          
+    }else{
+                       
+        DrawRectangle(guarda->x-imagem->width/9,guarda->y+(guarda->sentidoCampoDeVisao*guarda->campoDeVisao
+        ),imagem->height/4,guarda->campoDeVisao,GREEN);
+                    
+        }
+   }
 
     }
 
@@ -99,8 +108,8 @@ void seEntrouNoCampoDeVisao(Guardas* guarda,Texture2D* imagem,char direcao[12],i
            
             if(  xJogador + imagemJogador.width/2 >= guarda->x && xJogador - imagemJogador.width/2 < guarda->x + guarda->campoDeVisao && yJogador + imagemJogador.height >= guarda->y && yJogador < guarda->y + imagem->height/4 ){
           
-          DrawText("Perdeu",600,600,50,WHITE);
-                *estadoFase=-10;
+        
+                *estadoFase=-1;
             
             }
        
@@ -108,14 +117,37 @@ void seEntrouNoCampoDeVisao(Guardas* guarda,Texture2D* imagem,char direcao[12],i
             
             if(xJogador + imagemJogador.width/2 >= guarda->x-guarda->campoDeVisao  && xJogador < guarda->x+imagem->width/3 && yJogador + imagemJogador.height >= guarda->y && yJogador < guarda->y+imagem->height/4){
            
-           DrawText("Perdeu",600,600,50,WHITE);
+        
                 
-            *estadoFase=-10;
+            *estadoFase=-1;
             
        }
        
 }
-}else if(strcmp(direcao,"vertical")){
+}else if(strcmp(direcao,"vertical")==0){
+    
+    
+    if(guarda-> sentidoCampoDeVisao > 0){
+        
+        if(yJogador+imagemJogador.width/2 >= guarda->y && yJogador - imagemJogador.width/2 < guarda->y + guarda->campoDeVisao && xJogador + imagemJogador.width/2 >= guarda->x && xJogador < guarda->x + imagem->width/3 ){
+            
+        *estadoFase=-1;
+
+          DrawText("qweqweqw",  300,300,50,BLACK);
+        }
+        
+        
+    }else{
+       
+        if(yJogador + imagemJogador.width/2 >= guarda->y-guarda->campoDeVisao  && yJogador < guarda->y+imagem->height/4 && xJogador + imagemJogador.width/2 >= guarda->x && xJogador < guarda->x+imagem->width/3){
+           
+          *estadoFase=-1;
+          DrawText("qweqweqw",  300,300,50,BLACK);
+                
+            
+       }
+        
+    }
     
     
 }else{   
