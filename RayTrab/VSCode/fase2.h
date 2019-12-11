@@ -620,7 +620,8 @@ void comecarFaseDois(int* estadoFaseDois,int larguraTela,int alturaTela){
             
         //Fim da vericaçao
             
-        }
+            
+        }//FIM WHILE
    
    
    

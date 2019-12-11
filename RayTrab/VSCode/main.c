@@ -671,7 +671,7 @@ int main()
             
         }else{
             
-               // DrawText("Ganhou2",100,100,50,RED);
+                DrawText("Ganhou2",100,100,50,RED);
         
         }
     }
@@ -713,6 +713,7 @@ InitWindow(GetScreenWidth(),GetScreenHeight(),"");
       BeginDrawing();
       
       if(estadoFaseDois==-1){
+            
             
             DrawText("Perdeu",100,100,50,RED);
            
