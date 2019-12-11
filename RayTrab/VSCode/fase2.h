@@ -11,16 +11,12 @@
 
 
 void passouFaseDois(Jogador* jogador,int* estadoFase){
-    
-    
-        if(1){
+      
+   if(jogador->posicao_quadrado.y==58){
         
-
       *estadoFase=1;
         
-        
     }else{
-        
         
     *estadoFase=0;        
     }  
@@ -322,10 +318,6 @@ void comecarFaseDois(int* estadoFaseDois,int larguraTela,int alturaTela){
         colisao_cenario.colisao[29].y = 355;
         
         
-        colisao_cenario.colisao[30].x=695;
-        colisao_cenario.colisao[30].y=288;
-        colisao_cenario.colisao[30].width=2;
-        colisao_cenario.colisao[30].height=16;
         
     
     //FIM INICIANDO COLISAO com o cenario
@@ -366,15 +358,7 @@ void comecarFaseDois(int* estadoFaseDois,int larguraTela,int alturaTela){
           
        //Atualização da fase 2
          
-        //Colisao Com Arames
-        
-       if( jogador.posicao_quadrado.x+4 > 700 && jogador.posicao_quadrado.y >280 && jogador.posicao_quadrado.y < 305 ){
-           
-          jogador.posicao_quadrado.x= jogador.posicao_quadrado.x;
-           
-       }
-        
-        //Fim Colisao com Arames
+
         
         //Atualização jogador 
         personagem_movimentacao(&jogador,&colisao_cenario,contador,NULL);
@@ -398,6 +382,21 @@ void comecarFaseDois(int* estadoFaseDois,int larguraTela,int alturaTela){
         jogador.Down.y = jogador.posicao_quadrado.y + 40;
         jogador.Down.width = jogador.char_walk.width/3;
         jogador.Down.height = jogador.char_walk.height/7;
+        
+        
+        if(jogador.animar > 0)
+        {
+            jogador.Up.width = jogador.char_walk.width/4;
+
+            jogador.Right.x = jogador.posicao_quadrado.x + 15;
+            jogador.Right.width = jogador.char_walk.width/8;
+
+            jogador.Left.width = jogador.char_walk.width/8;
+
+            jogador.Down.width = jogador.char_walk.width/4;
+        }
+        
+        
         //Fim atualização jogador
         
         //Atualização guardas 
@@ -611,6 +610,8 @@ void comecarFaseDois(int* estadoFaseDois,int larguraTela,int alturaTela){
     
     
         //Verifica Estado da fase
+
+            passouFaseDois(&jogador,estadoFaseDois);
         
             seEntrouNoCampoDeVisao(&guarda1,&imagemGuarda,"vertical",jogador.posicao_quadrado.x,jogador.posicao_quadrado.y,jogador.char_walk,estadoFaseDois);
             //Guarda 1

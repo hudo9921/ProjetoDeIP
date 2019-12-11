@@ -7,7 +7,7 @@
 #include "jogador.h"
 #include "cronometro.h"
 #include "fase2.h"
-//#include "objetos.h"
+#include "fase3.h"
 
 void passouDeFaseUm(Jogador* jogador,Portas* porta,int* estadoFase){
     
@@ -34,10 +34,8 @@ int main()
     srand(time(NULL));
 
     int estadoFaseUm=0; //estadoFaseUm=0,jogo continua; estadoFaseUm=1,jogador passou de fase; estadoFaseUm=-1, jogador perdeu a fase; 
-    int acabouFaseUm=0;
     
     int estadoFaseDois=0;
-    int acabouFaseDois=0;
     int estadoFaseTres=0;    
         
     int frameAtual=0;
@@ -671,7 +669,18 @@ int main()
             
         }else{
             
-                DrawText("Ganhou2",100,100,50,RED);
+               comecarFaseTres();
+               ClearBackground(RAYWHITE);
+               
+               if(estadoFaseTres==-1){
+                    
+                      DrawText("Perdeu3",100,100,50,RED);
+          
+               }else{
+                   
+                     DrawText("Ganhou essa bagaça",100,100,50,RED);
+                   
+               }
         
         }
     }
