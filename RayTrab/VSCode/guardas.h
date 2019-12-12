@@ -6,11 +6,11 @@
 
 typedef struct
 {
-   int x;
-   int y;
+   float x;
+   float y;
    Rectangle imagem;
    int campoDeVisao;
-   int movimento;
+   float movimento;
    int sentidoCampoDeVisao;
    
 }Guardas;
@@ -25,13 +25,13 @@ void moverGuardas(Texture2D* imagem,Guardas* guarda,char direcao[12],int comecoT
     
     if(strcmp(direcao,"horizontal")==0){
         
-       if(guarda->x+imagem->width/3 == fimTela ){
+       if(guarda->x+imagem->width/3 >= fimTela ){
             
             guarda->movimento=-guarda->movimento;
             guarda->imagem.y=3*imagem->height/4;
             guarda->sentidoCampoDeVisao= -guarda->sentidoCampoDeVisao;
             
-        }else if (guarda->x == comecoTela){
+        }else if (guarda->x <= comecoTela){
             
             guarda->imagem.y=2*imagem->height/4;   
             guarda->movimento=-guarda->movimento;
@@ -44,13 +44,13 @@ void moverGuardas(Texture2D* imagem,Guardas* guarda,char direcao[12],int comecoT
         
     }else{
              
-        if(guarda->y+imagem->height/4 == fimTela){
+        if(guarda->y+imagem->height/4 >= fimTela){
             
             guarda->movimento=-guarda->movimento;
             guarda->imagem.y=imagem->height/4;
             guarda->sentidoCampoDeVisao= -guarda->sentidoCampoDeVisao;
             
-        }else if (guarda->y == comecoTela){
+        }else if (guarda->y <= comecoTela){
             
             guarda->imagem.y=4*imagem->height/4;   
             guarda->movimento=-guarda->movimento;

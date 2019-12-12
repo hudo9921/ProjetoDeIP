@@ -27,13 +27,11 @@ void procurarItem(Objetos objeto,Texture2D imagem,Jogador* jogador,int xJogador,
        
        if(objeto.possuiItem==1){
            
-           jogador->item=1;
-           DrawText("Pegou;",800,600,50,RED);
+           jogador->item=1;    
            *pegouItem=1;
            
        }else{
            
-           DrawText("nao",800,600,50,RED);
            
        }
     

@@ -49,7 +49,7 @@ void cortarArame(Jogador* jogador,int condicao,Texture2D* campo,int* podePassarP
     
 
 
-void comecarFaseDois(int* estadoFaseDois,int larguraTela,int alturaTela){
+void comecarFaseDois(int* estadoFaseDois){
     
     srand(time(NULL));
     
@@ -58,7 +58,7 @@ void comecarFaseDois(int* estadoFaseDois,int larguraTela,int alturaTela){
     int objetoDeSalaSorteado= (rand()%3)+1;
     int achouObjeto=0; 
     int pegouAlicate=0;
-    int pegouChave=1;
+    int pegouChave=0;
      
     Font fonte= LoadFont("fonte.otf");
     
@@ -365,7 +365,7 @@ void comecarFaseDois(int* estadoFaseDois,int larguraTela,int alturaTela){
         colisao_cenario.colisao[32].height=6;
         
         //Colisao PortaSAida
-        colisao_cenario.colisao[33].x=524;
+        colisao_cenario.colisao[33].x=520;
         colisao_cenario.colisao[33].y=160;
         colisao_cenario.colisao[33].width=imagemPortaFinal.width;
         colisao_cenario.colisao[33].height=0;
@@ -405,7 +405,7 @@ void comecarFaseDois(int* estadoFaseDois,int larguraTela,int alturaTela){
 
       
 
-        while(!WindowShouldClose()){
+        while(*estadoFaseDois==0){
           
        //Atualização da fase 2
        
@@ -495,10 +495,10 @@ void comecarFaseDois(int* estadoFaseDois,int larguraTela,int alturaTela){
         draw_jogador(&jogador);   //desenha o jogador
         
         desenharGuardas(&imagemGuarda,&guarda1);
-        desenharCampoDeVisao(&guarda1,"vertical",&imagemGuarda);
+       
         
         desenharGuardas(&imagemGuarda,&guarda2);
-        desenharCampoDeVisao(&guarda2,"vertical",&imagemGuarda);
+       
         
         //Fim desenahr os personagens
           
@@ -508,7 +508,6 @@ void comecarFaseDois(int* estadoFaseDois,int larguraTela,int alturaTela){
         
         if(IsKeyDown(KEY_E)  && achouObjeto==1 ){
         
-            DrawText("12",0,900,50,RED);
            if(estanteCelas[0].interagiuComJogador==1){
             
                 procurarItem(estanteCelas[0],procurando,&jogador,jogador.posicao_quadrado.x,jogador.posicao_quadrado.y,&pegouAlicate);
@@ -564,7 +563,7 @@ void comecarFaseDois(int* estadoFaseDois,int larguraTela,int alturaTela){
            }else{
 
                 
-               DrawText("34",0,1000,50,RED);
+              
                
              achouObjeto=0; 
              estanteCelas[0].interagiuComJogador=0;
@@ -732,7 +731,7 @@ void comecarFaseDois(int* estadoFaseDois,int larguraTela,int alturaTela){
                
            }
        
-    
+      jogador.contador = 0;
                     
             
 EndDrawing();
