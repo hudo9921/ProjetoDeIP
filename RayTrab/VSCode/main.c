@@ -1120,6 +1120,10 @@ fclose(PonteiroArquivo1);
             fclose(F);
             }
             
+            //ChecarHS();
+            comecarFaseDois(&estadoFaseDois);
+            ClearBackground(RAYWHITE);
+       
         if(estadoFaseDois==-1){
             
             estadoJogo=6;
@@ -1154,13 +1158,11 @@ fclose(PonteiroArquivo1);
                
                if(estadoFaseTres==-1){
                     
-                      estadoFaseTres=0;
-                      estadoJogo=6;
+                      DrawText("Perdeu3",100,100,50,RED);
           
-               }else if (estadoFaseTres==1){
+               }else{
                    
-                     estadoFaseTres=0;
-                     estadoJogo=5;
+                     DrawText("Ganhou essa bagaça",100,100,50,RED);
                    
                }
         
