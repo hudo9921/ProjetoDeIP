@@ -49,7 +49,7 @@ void cortarArame(Jogador* jogador,int condicao,Texture2D* campo,int* podePassarP
     
 
 
-void comecarFaseDois(int* estadoFaseDois,int dificuldade){
+void comecarFaseDois(int* estadoFaseDois){
     
     srand(time(NULL));
     
@@ -380,7 +380,7 @@ void comecarFaseDois(int* estadoFaseDois,int dificuldade){
     guarda1.x=440;
     guarda1.y=590;
     guarda1.imagem = (Rectangle) {0.0f,0.0f,imagemGuarda.width/3,imagemGuarda.height/4};
-    guarda1.movimento = 5+0.3*dificuldade;
+    guarda1.movimento = 5;
     guarda1.sentidoCampoDeVisao=1;
     guarda1.campoDeVisao=100;
     guarda1.imagem.y= imagemGuarda.height/4;
@@ -394,7 +394,7 @@ void comecarFaseDois(int* estadoFaseDois,int dificuldade){
     guarda2.y=150;
     
     guarda2.imagem = (Rectangle) {0.0f,0.0f,imagemGuarda.width/3,imagemGuarda.height/4};
-    guarda2.movimento = -(5 +0.3*dificuldade );
+    guarda2.movimento = -5;
     guarda2.sentidoCampoDeVisao=-1;
     guarda2.campoDeVisao=100;
     guarda2.imagem.y= 4*imagemGuarda.height/4;
