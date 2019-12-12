@@ -30,7 +30,7 @@ void passouDeFaseUm(Jogador* jogador,Portas* porta,int* estadoFase){
 int main() 
 {
     
-   
+   /*
     srand(time(NULL));
 
     int estadoFaseUm=0; //estadoFaseUm=0,jogo continua; estadoFaseUm=1,jogador passou de fase; estadoFaseUm=-1, jogador perdeu a fase; 
@@ -661,7 +661,7 @@ int main()
         
             comecarFaseDois(&estadoFaseDois,largura_tela,altura_tela);
             ClearBackground(RAYWHITE);
-       
+       ]
         if(estadoFaseDois==-1){
             
             DrawText("Perdeu2",100,100,50,RED);
@@ -702,7 +702,7 @@ int main()
 CloseAudioDevice(); 
  
  CloseWindow();
- /*
+ */
   
    
   int estadoFaseDois=0;
@@ -739,7 +739,7 @@ EndDrawing();
       }
    CloseWindow();
     
-    */
+    
     return 0;
 
 }

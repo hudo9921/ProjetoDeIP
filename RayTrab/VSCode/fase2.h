@@ -58,7 +58,7 @@ void comecarFaseDois(int* estadoFaseDois,int larguraTela,int alturaTela){
     int objetoDeSalaSorteado= (rand()%3)+1;
     int achouObjeto=0; 
     int pegouAlicate=0;
-    int pegouChave=0;
+    int pegouChave=1;
      
     Font fonte= LoadFont("fonte.otf");
     
@@ -365,7 +365,7 @@ void comecarFaseDois(int* estadoFaseDois,int larguraTela,int alturaTela){
         colisao_cenario.colisao[32].height=6;
         
         //Colisao PortaSAida
-        colisao_cenario.colisao[33].x=520;
+        colisao_cenario.colisao[33].x=524;
         colisao_cenario.colisao[33].y=160;
         colisao_cenario.colisao[33].width=imagemPortaFinal.width;
         colisao_cenario.colisao[33].height=0;
@@ -405,7 +405,7 @@ void comecarFaseDois(int* estadoFaseDois,int larguraTela,int alturaTela){
 
       
 
-        while(*estadoFaseDois==0){
+        while(!WindowShouldClose()){
           
        //Atualização da fase 2
        
