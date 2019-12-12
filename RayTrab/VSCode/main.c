@@ -30,7 +30,7 @@ void passouDeFaseUm(Jogador* jogador,Portas* porta,int* estadoFase){
 int main() 
 {
     
-   
+   /*
     srand(time(NULL));
 
     int estadoFaseUm=0; //estadoFaseUm=0,jogo continua; estadoFaseUm=1,jogador passou de fase; estadoFaseUm=-1, jogador perdeu a fase; 
@@ -608,6 +608,7 @@ int main()
             
             // LOGICA GURADA 2
      
+     
                 moverGuardas(&imagemGuardas,&guarda2,"horizontal",comecoLarguraAreaJogo,fimLarguraAreaJogo);
                 desenharGuardas(&imagemGuardas,&guarda2);
                 desenharCampoDeVisao(&guarda2,"horizontal",&imagemGuardas);
@@ -660,7 +661,7 @@ int main()
         
             comecarFaseDois(&estadoFaseDois,largura_tela,altura_tela);
             ClearBackground(RAYWHITE);
-       
+       ]
         if(estadoFaseDois==-1){
             
             DrawText("Perdeu2",100,100,50,RED);
@@ -701,9 +702,9 @@ int main()
 CloseAudioDevice(); 
  
  CloseWindow();
- 
+ */
   
-   /*
+   
   int estadoFaseDois=0;
 InitWindow(GetScreenWidth(),GetScreenHeight(),"");
     SetTargetFPS(60);
@@ -715,6 +716,7 @@ InitWindow(GetScreenWidth(),GetScreenHeight(),"");
       while(!WindowShouldClose()){
 
      comecarFaseDois(&estadoFaseDois,GetScreenWidth(), GetScreenHeight());
+
    
       
       
@@ -724,17 +726,19 @@ InitWindow(GetScreenWidth(),GetScreenHeight(),"");
       if(estadoFaseDois==-1){
             
             
+            
             DrawText("Perdeu",100,100,50,RED);
+            
            
             
-        }else{
-            DrawText(FormatText("%i",estadoFaseDois),300,300,50,RED);
+        }else{   
+         
            DrawText("Ganhou",100,100,40,GREEN); 
 } 
 EndDrawing();  
       }
    CloseWindow();
-    */
+    
     
     return 0;
 

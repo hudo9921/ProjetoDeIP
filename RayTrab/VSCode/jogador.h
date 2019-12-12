@@ -26,7 +26,7 @@ typedef struct
 
 typedef struct
 {
-    Rectangle colisao[31];
+    Rectangle colisao[35];
     Rectangle interacao[13];
     int chave;
 
@@ -42,7 +42,7 @@ void personagem_movimentacao( Jogador* jogador , Colisao_cenario* colisao_cenari
     Rectangle C;
     Rectangle E;
 
-    for( int i = 0 ; i < 31 ; i++ )
+    for( int i = 0 ; i < 35 ; i++ )
     {
         if( CheckCollisionRecs( jogador->Up, colisao_cenario->colisao[i] ) )
         {
