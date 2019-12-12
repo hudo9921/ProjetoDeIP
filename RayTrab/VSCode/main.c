@@ -42,6 +42,8 @@ int main()
 
     int estadoTelaPerdeu=0;
 
+    int EstadoSelectLVL=0;
+
     int estadoJogo=0;//0=CarregarMenu. 2=LVLselect,3=CarregarFase1,4=CarregarFase2,5=CarregarFase3,6=CarregarHS 
         
     int frameAtual=0;
@@ -133,6 +135,10 @@ int main()
     TelaPerdeuClick.y=0;
     TelaPerdeuClick.width=1368;
     TelaPerdeuClick.height=1368;
+
+    //Assets Select LvL
+    
+    
 
 
     //vetor do mouse
@@ -710,6 +716,7 @@ int main()
             
             // LOGICA GURADA 2
      
+     
                 moverGuardas(&imagemGuardas,&guarda2,"horizontal",comecoLarguraAreaJogo,fimLarguraAreaJogo);
                 desenharGuardas(&imagemGuardas,&guarda2);
                 desenharCampoDeVisao(&guarda2,"horizontal",&imagemGuardas);
@@ -758,7 +765,11 @@ int main()
         }
         else if(estadoJogo==4)
         {
-            //drawLVLSelect
+            EstadoSelectLVL=0;
+            while(EstadoSelectLVL==0)
+                {
+
+                }
         }
         else if(estadoJogo==5)
         {
@@ -851,8 +862,8 @@ int main()
  CloseWindow();
  
   
-   /*
-  int estadoFaseDois=0;
+   
+  //int estadoFaseDois=0;
 InitWindow(GetScreenWidth(),GetScreenHeight(),"");
     SetTargetFPS(60);
          
@@ -863,6 +874,7 @@ InitWindow(GetScreenWidth(),GetScreenHeight(),"");
       while(!WindowShouldClose()){
 
      comecarFaseDois(&estadoFaseDois,GetScreenWidth(), GetScreenHeight());
+
    
       
       
@@ -872,17 +884,19 @@ InitWindow(GetScreenWidth(),GetScreenHeight(),"");
       if(estadoFaseDois==-1){
             
             
+            
             DrawText("Perdeu",100,100,50,RED);
+            
            
             
-        }else{
-            DrawText(FormatText("%i",estadoFaseDois),300,300,50,RED);
+        }else{   
+         
            DrawText("Ganhou",100,100,40,GREEN); 
 } 
 EndDrawing();  
       }
    CloseWindow();
-    */
+    
     
     return 0;
 

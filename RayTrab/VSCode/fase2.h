@@ -23,19 +23,42 @@ void passouFaseDois(Jogador* jogador,int* estadoFase){
     
 }
     
-    
 
+void cortarArame(Jogador* jogador,int condicao,Texture2D* campo,int* podePassarPeloArame){
+    
+    
+    if(condicao==1){
+     
+        *campo = LoadTexture("img/mapa_fase02_1.png");
+        *podePassarPeloArame=1;
+    }
+    if(condicao==2){ 
+    
+        *campo = LoadTexture("img/mapa_fase02_2.png");
+        *podePassarPeloArame=1;
+    }
+    if(condicao==3){
+        
+        *campo = LoadTexture("img/mapa_fase02_3.png");
+        *podePassarPeloArame=1;
+    }
+    
+    jogador->item=0;
+    
+}
+    
 
 
 void comecarFaseDois(int* estadoFaseDois,int larguraTela,int alturaTela){
     
     srand(time(NULL));
-     
+    
+    int podePassarPeloArame[3];
     int objetoDeCelaSorteado= (rand()%4) + 1;
     int objetoDeSalaSorteado= (rand()%3)+1;
     int achouObjeto=0; 
     int pegouAlicate=0;
-    int pegouChave=0;
+    int pegouChave=1;
      
     Font fonte= LoadFont("fonte.otf");
     
@@ -44,12 +67,17 @@ void comecarFaseDois(int* estadoFaseDois,int larguraTela,int alturaTela){
     Texture2D procurando = LoadTexture("img/Procurando.png");
     Texture2D mensagemProcurar = LoadTexture("img/Mensagem_procurar.png");
     Texture2D cela1= LoadTexture("img/cela01_fase02.png");
-    Texture2D cela2= LoadTexture("img/cela02_fase02.png");
     Texture2D estanteImagem= LoadTexture("img/estante.png");
+    Texture2D cela2= LoadTexture("img/cela02_fase02.png");
     Texture2D imagemCama = LoadTexture("img/cama.png");
     Texture2D alicate = LoadTexture("img/alicate.png");
     Texture2D chave = LoadTexture("img/key.png");
     Texture2D imagemPortaFinal = LoadTexture("img/porta_cela01.png");
+    
+    podePassarPeloArame[0]=0;
+    podePassarPeloArame[1]=0;
+    podePassarPeloArame[2]=0;
+    
     
     //Porta Final
     Portas portaFinal;
@@ -160,7 +188,7 @@ void comecarFaseDois(int* estadoFaseDois,int larguraTela,int alturaTela){
     contador[1] = 0;
     contador[2] = 0;
     jogador.posicao_quadrado.x =550;
-    jogador.posicao_quadrado.y = 710;
+    jogador.posicao_quadrado.y = 680;
     jogador.char_walk = LoadTexture("img/prisioneiro_pose02.png");
 
     jogador.Up.x = jogador.posicao_quadrado.x + 5;
@@ -318,7 +346,30 @@ void comecarFaseDois(int* estadoFaseDois,int larguraTela,int alturaTela){
         colisao_cenario.colisao[29].y = 355;
         
         
+        // arame vertical de cima
+        colisao_cenario.colisao[30].x=710;
+        colisao_cenario.colisao[30].y=284;
+        colisao_cenario.colisao[30].width=5;
+        colisao_cenario.colisao[30].height=308-284;
         
+        //arame vertoaç de baixo
+        colisao_cenario.colisao[31].x=710;
+        colisao_cenario.colisao[31].y=414;
+        colisao_cenario.colisao[31].width=5;
+        colisao_cenario.colisao[31].height=480-414;
+        
+        //arame horiozntal
+        colisao_cenario.colisao[32].x=732;
+        colisao_cenario.colisao[32].y=540;
+        colisao_cenario.colisao[32].width=860-732;
+        colisao_cenario.colisao[32].height=6;
+        
+        //Colisao PortaSAida
+        colisao_cenario.colisao[33].x=524;
+        colisao_cenario.colisao[33].y=160;
+        colisao_cenario.colisao[33].width=imagemPortaFinal.width;
+        colisao_cenario.colisao[33].height=0;
+                    
     
     //FIM INICIANDO COLISAO com o cenario
     
@@ -354,15 +405,14 @@ void comecarFaseDois(int* estadoFaseDois,int larguraTela,int alturaTela){
 
       
 
-        while(*estadoFaseDois==0){
+        while(!WindowShouldClose()){
           
        //Atualização da fase 2
-         
+       
 
-        
+       
         //Atualização jogador 
         personagem_movimentacao(&jogador,&colisao_cenario,contador,NULL);
-          
         jogador.Up.x = jogador.posicao_quadrado.x + 5;
         jogador.Up.y = jogador.posicao_quadrado.y;
         jogador.Up.width = jogador.char_walk.width/3;
@@ -601,8 +651,91 @@ void comecarFaseDois(int* estadoFaseDois,int larguraTela,int alturaTela){
             
             DrawText(FormatText("%f %f",jogador.posicao_quadrado.x,jogador.posicao_quadrado.y),1200,900,50,BLUE);
             
+             //MENSAGEM de cortar Arame PARA O USUARIO 
+             
+             
+             if(pegouAlicate && jogador.posicao_quadrado.x+jogador.char_walk.width/2 >= 686 && jogador.posicao_quadrado.y > 284 &&  jogador.posicao_quadrado.y < 308){
+                               
+                 DrawTextEx(fonte,"Aperte E para cortar",(Vector2){jogador.posicao_quadrado.x,jogador.posicao_quadrado.y-22},22,1,BLACK);
+                 
+                 if(IsKeyDown(KEY_E)){
+                     
+                    cortarArame(&jogador,1,&campo,&podePassarPeloArame[0]);
+                    
+                    colisao_cenario.colisao[30].x=0;
+                    colisao_cenario.colisao[30].y=0;
+                    colisao_cenario.colisao[30].width=0;
+                    colisao_cenario.colisao[30].height=0;
+                    pegouAlicate=0;
+                     
+                 }
+
+                
+            }
+        
+               if( pegouAlicate && jogador.posicao_quadrado.x >= 686 && jogador.posicao_quadrado.y > 414 &&  jogador.posicao_quadrado.y < 480 ){
             
-            EndDrawing();
+                     DrawTextEx(fonte,"Aperte E para cortar",(Vector2){jogador.posicao_quadrado.x,jogador.posicao_quadrado.y-22},22,1,BLACK);
+                     
+                    if(IsKeyDown(KEY_E)){
+                     
+                     cortarArame(&jogador,2,&campo,&podePassarPeloArame[1]);
+                     colisao_cenario.colisao[31].x=0;
+                     colisao_cenario.colisao[31].y=0;
+                     colisao_cenario.colisao[31].width=0;
+                     colisao_cenario.colisao[31].height=0;
+                     pegouAlicate=0;
+                      
+                 }
+                
+                }
+              
+               if(pegouAlicate &&jogador.posicao_quadrado.x >740  && jogador.posicao_quadrado.x <860 && jogador.posicao_quadrado.y<=550 ){
+                   
+                    DrawTextEx(fonte,"Aperte E para cortar",(Vector2){jogador.posicao_quadrado.x,jogador.posicao_quadrado.y-22},22,1,BLACK);
+                 
+                    if(IsKeyDown(KEY_E)){
+                     
+                     cortarArame(&jogador,3,&campo,&podePassarPeloArame[2]);
+                     colisao_cenario.colisao[32].x=0;
+                     colisao_cenario.colisao[32].y=0;
+                     colisao_cenario.colisao[32].width=0;
+                     colisao_cenario.colisao[32].height=0;
+                     pegouAlicate=0;
+                     
+                 }
+                   
+                   
+               }
+                
+                
+         //Fim de MENSAGEM de cortar Arame PARA O USUARIO 
+             
+             
+                    
+       
+           if( pegouChave && jogador.posicao_quadrado.x > 530 && jogador.posicao_quadrado.x < 530+imagemPortaFinal.width && jogador.posicao_quadrado.y <= 170 ){
+               
+               DrawTextEx(fonte,"Aperte E para abrir a porta!",(Vector2){portaFinal.x/2-22,portaFinal.y-22},22,1,BLACK);
+               
+               if(IsKeyPressed(KEY_E)){
+                   
+                   mudarEstadoPorta(&portaFinal);
+                   colisao_cenario.colisao[33].x=0;
+                   colisao_cenario.colisao[33].y=0;
+                   colisao_cenario.colisao[33].width=0;
+                   colisao_cenario.colisao[33].height=0;
+                   pegouChave=0;
+                   
+                   
+               }
+               
+           }
+       
+    
+                    
+            
+EndDrawing();
     
     
     
@@ -617,12 +750,14 @@ void comecarFaseDois(int* estadoFaseDois,int larguraTela,int alturaTela){
             //Guarda 1
             
             seEntrouNoCampoDeVisao(&guarda2,&imagemGuarda,"vertical",jogador.posicao_quadrado.x,jogador.posicao_quadrado.y,jogador.char_walk,estadoFaseDois);
+            
             //Guarda 2
             
         //Fim da vericaçao
             
             
-        }//FIM WHILE
+        }//FIM 
+        
    
    
    
