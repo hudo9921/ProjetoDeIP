@@ -4,10 +4,10 @@
 #endif
 
 
-void passouFaseTres(Jogador* jogador,int* estadoFase){
+void passouFaseTres(){
     
-    if(jogador->posicao_quadrado.y>720) *estadoFase=1;
-    else *estadoFase = 0;
+    
+    
     
 }
 
@@ -39,11 +39,11 @@ void comecarFaseTres(int* estadoFaseTres){
     
     
     int objetoDeSalaSorteado= (rand()%2)+1;
-    int cortouArame=1;
+    int cortouArame=0;
     int pegouAlicate=0;
     int pegouMartelo=0;
     int achouObjeto=0;
-    int quebrouVaso = 0;
+    int quebrouvaso=0;
     
     //Iniciando Guardas
     Guardas guarda[6];
@@ -197,156 +197,161 @@ void comecarFaseTres(int* estadoFaseTres){
     //fim iniciando jogador
     
     //INICIADNO COLISOES COM o CENARFIO
-   Colisao_cenario colisao_cenario;
-   colisao_cenario.colisao[0].height = 768;
-   colisao_cenario.colisao[0].width = 40;
-   colisao_cenario.colisao[0].x = 200;
-   colisao_cenario.colisao[0].y = 1;
+   Colisao_cenario colisao;
+   colisao.colisao[0].height = 768;
+   colisao.colisao[0].width = 40;
+   colisao.colisao[0].x = 200;
+   colisao.colisao[0].y = 1;
+   colisao.colisao[1].height = 321;
+   colisao.colisao[1].width = 40;
+   colisao.colisao[1].x = 577;
+   colisao.colisao[1].y = 1;
+   colisao.colisao[2].height = 359;
+   colisao.colisao[2].width = 40;
+   colisao.colisao[2].x = 577;
+   colisao.colisao[2].y = 409;
+   colisao.colisao[3].height = 40;
+   colisao.colisao[3].width = 337;
+   colisao.colisao[3].x = 240;
+   colisao.colisao[3].y = 1;
+   colisao.colisao[4].height = 40;
+   colisao.colisao[4].width = 126;
+   colisao.colisao[4].x = 240;
+   colisao.colisao[4].y = 222;
+   colisao.colisao[5].height = 40;
+   colisao.colisao[5].width = 133;
+   colisao.colisao[5].x = 240 + 126 + 80;
+   colisao.colisao[5].y = 222;
+   colisao.colisao[6].height = 40;
+   colisao.colisao[6].width = 133;
+   colisao.colisao[6].x = 240 + 126 + 80;
+   colisao.colisao[6].y = 485;
+   colisao.colisao[7].height = 40;
+   colisao.colisao[7].width = 126;
+   colisao.colisao[7].x = 240;
+   colisao.colisao[7].y = 485;
+   colisao.colisao[8].height = 40;
+   colisao.colisao[8].width = 126;
+   colisao.colisao[8].x = 240;
+   colisao.colisao[8].y = 725;
+   colisao.colisao[9].height = 40;
+   colisao.colisao[9].width = 133;
+   colisao.colisao[9].x = 240 + 126 + 80;
+   colisao.colisao[9].y = 725;
+   colisao.colisao[10].height = 40;
+   colisao.colisao[10].width = 480;
+   colisao.colisao[10].x = 620;
+   colisao.colisao[10].y = 1;
+   colisao.colisao[11].height = 12;
+   colisao.colisao[11].width = 482;
+   colisao.colisao[11].x = 618;
+   colisao.colisao[11].y = 757;
+   colisao.colisao[12].height = 766;
+   colisao.colisao[12].width = 21;
+   colisao.colisao[12].x = 1082;
+   colisao.colisao[12].y = 1;
+   colisao.colisao[13].height = 295;
+   colisao.colisao[13].width = 40;
+   colisao.colisao[13].x = 813;
+   colisao.colisao[13].y = 40;
+   colisao.colisao[14].height = 295;
+   colisao.colisao[14].width = 40;
+   colisao.colisao[14].x = 813 + 247;
+   colisao.colisao[14].y = 40;
+   colisao.colisao[15].height = 40;
+   colisao.colisao[15].width = 70;
+   colisao.colisao[15].x = 850;
+   colisao.colisao[15].y = 293;
+   colisao.colisao[16].height = 40;
+   colisao.colisao[16].width = 90;
+   colisao.colisao[16].x = 850 + 60 + 65;
+   colisao.colisao[16].y = 293;
+   colisao.colisao[17].height = 60;
+   colisao.colisao[17].width = 84;
+   colisao.colisao[17].x = 850;
+   colisao.colisao[17].y = 160;
+   colisao.colisao[18].height = 60;
+   colisao.colisao[18].width = 84;
+   colisao.colisao[18].x = 850 + 8;
+   colisao.colisao[18].y = 35;
+   colisao.colisao[19].height = 60;
+   colisao.colisao[19].width = 50;
+   colisao.colisao[19].x = 850 + 170;
+   colisao.colisao[19].y = 35;
+   colisao.colisao[20].height = 60;
+   colisao.colisao[20].width = 50;
+   colisao.colisao[20].x = 850 + 174;
+   colisao.colisao[20].y = 158;
+   colisao.colisao[21].height = 60;
+   colisao.colisao[21].width = 88;
+   colisao.colisao[21].x = 240;
+   colisao.colisao[21].y = 34;
+   colisao.colisao[22].height = 60;
+   colisao.colisao[22].width = 37;
+   colisao.colisao[22].x = 240 + 148;
+   colisao.colisao[22].y = 34;
+   colisao.colisao[23].height = 60;
+   colisao.colisao[23].width = 80;
+   colisao.colisao[23].x = 240 + 257;
+   colisao.colisao[23].y = 34;
+   colisao.colisao[24].height = 60;
+   colisao.colisao[24].width = 100;
+   colisao.colisao[24].x = 240 + 10;
+   colisao.colisao[24].y = 515;
+   colisao.colisao[25].height = 54;
+   colisao.colisao[25].width = 40;
+   colisao.colisao[25].x = 240 + 637;
+   colisao.colisao[25].y = 714;
+   colisao.colisao[26].height = 54;
+   colisao.colisao[26].width = 40;
+   colisao.colisao[26].x = 240 + 637 + 100;
+   colisao.colisao[26].y = 714;
    
-   colisao_cenario.colisao[1].height = 321;
-   colisao_cenario.colisao[1].width = 40;
-   colisao_cenario.colisao[1].x = 577;
-   colisao_cenario.colisao[1].y = 1;
    
-   colisao_cenario.colisao[2].height = 359;
-   colisao_cenario.colisao[2].width = 40;
-   colisao_cenario.colisao[2].x = 577;
-   colisao_cenario.colisao[2].y = 409;
-   
-   colisao_cenario.colisao[3].height = 40;
-   colisao_cenario.colisao[3].width = 337;
-   colisao_cenario.colisao[3].x = 240;
-   colisao_cenario.colisao[3].y = 1;
-   
-   colisao_cenario.colisao[4].height = 40;
-   colisao_cenario.colisao[4].width = 126;
-   colisao_cenario.colisao[4].x = 240;
-   colisao_cenario.colisao[4].y = 222;
-   
-   colisao_cenario.colisao[5].height = 40;
-   colisao_cenario.colisao[5].width = 133;
-   colisao_cenario.colisao[5].x = 240 + 126 + 80;
-   colisao_cenario.colisao[5].y = 222;
-   
-   colisao_cenario.colisao[6].height = 40;
-   colisao_cenario.colisao[6].width = 133;
-   colisao_cenario.colisao[6].x = 240 + 126 + 80;
-   colisao_cenario.colisao[6].y = 485;
-   
-   colisao_cenario.colisao[7].height = 40;
-   colisao_cenario.colisao[7].width = 126;
-   colisao_cenario.colisao[7].x = 240;
-   colisao_cenario.colisao[7].y = 485;
-   
-   colisao_cenario.colisao[8].height = 40;
-   colisao_cenario.colisao[8].width = 126;
-   colisao_cenario.colisao[8].x = 240;
-   colisao_cenario.colisao[8].y = 725;
-   
-   colisao_cenario.colisao[9].height = 40;
-   colisao_cenario.colisao[9].x = 240 + 126 + 80;
-   colisao_cenario.colisao[9].y = 725;
-   //colisao_cenario.colisao[9].width = 1;
-   
-   colisao_cenario.colisao[10].height = 40;
-   colisao_cenario.colisao[10].width = 480;
-   colisao_cenario.colisao[10].x = 620;
-   colisao_cenario.colisao[10].y = 1;
-   
-   colisao_cenario.colisao[11].height = 12;
-   colisao_cenario.colisao[11].width = 482;
-   colisao_cenario.colisao[11].x = 618;
-   colisao_cenario.colisao[11].y = 757;
-   
-   colisao_cenario.colisao[12].height = 766;
-   colisao_cenario.colisao[12].width = 21;
-   colisao_cenario.colisao[12].x = 1082;
-   colisao_cenario.colisao[12].y = 1;
-   
-   colisao_cenario.colisao[13].height = 295;
-   colisao_cenario.colisao[13].width = 40;
-   colisao_cenario.colisao[13].x = 813;
-   colisao_cenario.colisao[13].y = 40;
-   
-   colisao_cenario.colisao[14].height = 295;
-   colisao_cenario.colisao[14].width = 40;
-   colisao_cenario.colisao[14].x = 813 + 247;
-   colisao_cenario.colisao[14].y = 40;
-   
-   colisao_cenario.colisao[15].height = 40;
-   colisao_cenario.colisao[15].width = 70;
-   colisao_cenario.colisao[15].x = 850;
-   colisao_cenario.colisao[15].y = 293;
-   
-   colisao_cenario.colisao[16].height = 40;
-   colisao_cenario.colisao[16].width = 90;
-   colisao_cenario.colisao[16].x = 850 + 60 + 65;
-   colisao_cenario.colisao[16].y = 293;
-   
-   colisao_cenario.colisao[17].height = 60;
-   colisao_cenario.colisao[17].width = 84;
-   colisao_cenario.colisao[17].x = 850;
-   colisao_cenario.colisao[17].y = 160;
-   
-   colisao_cenario.colisao[18].height = 60;
-   colisao_cenario.colisao[18].width = 84;
-   colisao_cenario.colisao[18].x = 850 + 8;
-   colisao_cenario.colisao[18].y = 35;
-   
-   colisao_cenario.colisao[19].height = 60;
-   colisao_cenario.colisao[19].width = 50;
-   colisao_cenario.colisao[19].x = 850 + 170;
-   colisao_cenario.colisao[19].y = 35;
-   
-   
-   colisao_cenario.colisao[21].height = 60;
-   colisao_cenario.colisao[21].width = 88;
-   colisao_cenario.colisao[21].x = 240;
-   colisao_cenario.colisao[21].y = 34;
-   
-   colisao_cenario.colisao[22].height = 60;
-   colisao_cenario.colisao[22].width = 37;
-   colisao_cenario.colisao[22].x = 240 + 148;
-   colisao_cenario.colisao[22].y = 34;
-   
-   colisao_cenario.colisao[23].height = 60;
-   colisao_cenario.colisao[23].width = 80;
-   colisao_cenario.colisao[23].x = 240 + 257;
-   colisao_cenario.colisao[23].y = 34;
-   
-   colisao_cenario.colisao[24].height = 60;
-   colisao_cenario.colisao[24].width = 100;
-   colisao_cenario.colisao[24].x = 240 + 10;
-   colisao_cenario.colisao[24].y = 515;
-   
-   colisao_cenario.colisao[25].height = 54;
-   colisao_cenario.colisao[25].width = 40;
-   colisao_cenario.colisao[25].x = 240 + 637;
-   colisao_cenario.colisao[25].y = 714;
-   
-   colisao_cenario.colisao[26].height = 54;
-   colisao_cenario.colisao[26].width = 40;
-   colisao_cenario.colisao[26].x = 240 + 637 + 100;
-   colisao_cenario.colisao[26].y = 714;
-   
-  //Arame 
-   colisao_cenario.colisao[27].x= 624 ;
-   colisao_cenario.colisao[27].y= 326;
-   colisao_cenario.colisao[27].width=5;
-   colisao_cenario.colisao[27].height=45;
+   //Arame 
+   colisao.colisao[28].x= 624 ;
+   colisao.colisao[28].y= 326;
+   colisao.colisao[28].width=5;
+   colisao.colisao[28].height=45;
   
+  
+  
+   colisao.colisao[27].x= 0 ;
+   colisao.colisao[27].y= 0;
+   colisao.colisao[27].width= 0;
+   colisao.colisao[27].height=0;
    
-   
-   //Vaso
-   colisao_cenario.colisao[28].x= 394 ;
-   colisao_cenario.colisao[28].y= 440;
-   colisao_cenario.colisao[28].width= obstaculo.width;
-   colisao_cenario.colisao[28].height=obstaculo.height;
-   
-   colisao_cenario.colisao[20].height = obstaculo.height;
-   colisao_cenario.colisao[20].width = 40;
-   colisao_cenario.colisao[20].x = 394;
-   colisao_cenario.colisao[20].y = 460;
+   //
+   //Arame 
+   colisao.colisao[29].x= 394 ;
+   colisao.colisao[29].y= 440;
+   colisao.colisao[29].width= obstaculo.width;
+   colisao.colisao[29].height=obstaculo.height;
+   //
+   //Arame 
+   colisao.colisao[30].x= 0 ;
+   colisao.colisao[30].y= 0;
+   colisao.colisao[30].width= 0;
+   colisao.colisao[30].height=0;
+   //
+   //Arame 
+   colisao.colisao[31].x= 0 ;
+   colisao.colisao[31].y= 0;
+   colisao.colisao[31].width= 0;
+   colisao.colisao[31].height=0;
+   //
+   //Arame 
+   colisao.colisao[32].x= 0 ;
+   colisao.colisao[32].y= 0;
+   colisao.colisao[32].width= 0;
+   colisao.colisao[32].height=0;
+   //
+   ////Arame 
+   colisao.colisao[32].x= 0 ;
+   colisao.colisao[32].y= 0;
+   colisao.colisao[32].width= 0;
+   colisao.colisao[32].height=0;
+   //
    
    
     //Fim DAS COLISOES
@@ -377,8 +382,7 @@ void comecarFaseTres(int* estadoFaseTres){
         }
         
         for(int i=0;i<6;i++){
-            
-            
+             
             if( i==5 ) moverGuardas(&imagemGuardas,&guarda[5],"vertical",320,700);
             else  if(i==4) moverGuardas(&imagemGuardas,&guarda[4],"vertical",0,700);  
             else moverGuardas(&imagemGuardas,&guarda[i],"horizontal",240,550+imagemGuardas.width/3);
@@ -387,6 +391,7 @@ void comecarFaseTres(int* estadoFaseTres){
         
          //Atualização jogador 
           
+        personagem_movimentacao(&jogador,&colisao,contador,NULL);
         jogador.Up.x = jogador.posicao_quadrado.x + 5;
         jogador.Up.y = jogador.posicao_quadrado.y;
         jogador.Up.width = jogador.char_walk.width/3;
@@ -425,25 +430,31 @@ void comecarFaseTres(int* estadoFaseTres){
         
         
         
+            
+            
+        
         
          DrawTextureRec(campo,(Rectangle) {0.0f,0.0f,campo.width,campo.height},(Vector2) {0.0f,0.0f},WHITE );
          
          if(!cortouArame) DrawTextureRec(arame,(Rectangle){0.0f,0.0f,arame.width,arame.height},(Vector2){ 0.0f,0.0f },WHITE);
-         if(!quebrouVaso) DrawTextureRec(obstaculo,(Rectangle){0.0f,0.0f,obstaculo.width,obstaculo.height},(Vector2){ 0.0f,0.0f },WHITE);  
          
-          
          DrawText(FormatText("%f||%f",jogador.posicao_quadrado.x,jogador.posicao_quadrado.y),100,800,50,RED);
          
          draw_jogador(&jogador);
          
-        personagem_movimentacao(&jogador,&colisao_cenario,contador,NULL,3);
          for(int i=0;i<6;i++){
              
                desenharGuardas(&imagemGuardas,&guarda[i]);
                
          }
          
-         
+         for(int i=0;i<6;i++){
+             
+             if(i == 4 || i==5 ) desenharCampoDeVisao(&guarda[i],"vertical",&imagemGuardas);
+             else                desenharCampoDeVisao(&guarda[i],"horizontal",&imagemGuardas);
+             
+             
+         }
         
         
          if(IsKeyDown(KEY_E)  && achouObjeto==1 ){
@@ -514,27 +525,27 @@ void comecarFaseTres(int* estadoFaseTres){
                      
                   tirarObstaculo(&jogador,&cortouArame);
                     
-                    colisao_cenario.colisao[27].x=0;
-                    colisao_cenario.colisao[27].y=0;
-                    colisao_cenario.colisao[27].width=0;
-                    colisao_cenario.colisao[27].height=0;
+                    colisao.colisao[28].x=0;
+                    colisao.colisao[28].y=0;
+                    colisao.colisao[28].width=0;
+                    colisao.colisao[28].height=0;
                     pegouAlicate=0;
                      
                  } 
             }  
             
-             if(pegouMartelo && jogador.posicao_quadrado.x>= 364 && jogador.posicao_quadrado.x< 435   && jogador.posicao_quadrado.y > 410-15 &&  jogador.posicao_quadrado.y < 406){
+             if(pegouMartelo && jogador.posicao_quadrado.x>= 394 && jogador.posicao_quadrado.x< 635    && jogador.posicao_quadrado.y > 326 &&  jogador.posicao_quadrado.y < 326+45){
                                
-                 DrawTextEx(fonte,"Aperte E para Quebrar",(Vector2){jogador.posicao_quadrado.x,jogador.posicao_quadrado.y-22},22,1,BLACK);
+                 DrawTextEx(fonte,"Aperte E para cortar",(Vector2){jogador.posicao_quadrado.x,jogador.posicao_quadrado.y-22},22,1,BLACK);
                  
                  if(IsKeyDown(KEY_E)){
                      
                   tirarObstaculo(&jogador,&quebrouVaso);
                     
-                    colisao_cenario.colisao[20].x=0;
-                    colisao_cenario.colisao[20].y=0;
-                    colisao_cenario.colisao[20].width=0;
-                    colisao_cenario.colisao[20].height=0;
+                    colisao.colisao[29].x=0;
+                    colisao.colisao[29].y=0;
+                    colisao.colisao[29].width=0;
+                    colisao.colisao[29].height=0;
                     pegouMartelo=0;
                      
                  } 

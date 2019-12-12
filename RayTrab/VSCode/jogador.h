@@ -26,7 +26,7 @@ typedef struct
 
 typedef struct
 {
-    Rectangle colisao[34];
+    Rectangle colisao[35];
     Rectangle interacao[13];
     int chave;
 
@@ -36,39 +36,14 @@ typedef struct
 #endif
 
 
-    int a=0;
 
-void personagem_movimentacao( Jogador* jogador , Colisao_cenario* colisao_cenario, int contador[],Portas* porta,int nivel)
+void personagem_movimentacao( Jogador* jogador , Colisao_cenario* colisao_cenario, int contador[],Portas* porta)
 {
+    DrawText("24987294",100,100,30,RED);
     Rectangle C;
     Rectangle E;
-    if(nivel==3){
 
-        for( int i = 0 ; i < 28 ; i++ )
-    {       
-        if( CheckCollisionRecs( jogador->Up, colisao_cenario->colisao[i] ) )
-        {  
-       
-            C = colisao_cenario->colisao[i];
-        }
-        if( CheckCollisionRecs( jogador->Right, colisao_cenario->colisao[i]) )
-        {
-            C = colisao_cenario->colisao[i];
-        }
-        if( CheckCollisionRecs( jogador->Left, colisao_cenario->colisao[i]) )
-        {
-            C = colisao_cenario->colisao[i];
-        }
-        if( CheckCollisionRecs( jogador->Down, colisao_cenario->colisao[i]) )
-        {
-            C = colisao_cenario->colisao[i];
-        }
-        
-    }
-    }else{
-        
-        
-    for( int i = 0 ; i < 34  ; i++ )
+    for( int i = 0 ; i < 35; i++ )
     {
         if( CheckCollisionRecs( jogador->Up, colisao_cenario->colisao[i] ) )
         {
@@ -86,13 +61,7 @@ void personagem_movimentacao( Jogador* jogador , Colisao_cenario* colisao_cenari
         {
             C = colisao_cenario->colisao[i];
         }
-        
-    }}
-    
-
-        
-    
-    
+    }
     for( int i = 0 ; i < 12 ; i++ )
     {
         if( CheckCollisionRecs( jogador->Up, colisao_cenario->interacao[i]) )
