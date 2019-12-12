@@ -1,6 +1,6 @@
 #include "raylib.h"
 #include <string.h>
-#include "objetos.h"
+#include "objetos.h" 
 
 #ifndef FASE2_H
 #define FASE2_H
@@ -412,7 +412,7 @@ void comecarFaseDois(int* estadoFaseDois){
 
        
         //Atualização jogador 
-        personagem_movimentacao(&jogador,&colisao_cenario,contador,NULL);
+        personagem_movimentacao(&jogador,&colisao_cenario,contador,NULL,2);
         jogador.Up.x = jogador.posicao_quadrado.x + 5;
         jogador.Up.y = jogador.posicao_quadrado.y;
         jogador.Up.width = jogador.char_walk.width/3;

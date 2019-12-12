@@ -569,7 +569,7 @@ int main()
 
 
     {
-        personagem_movimentacao(&jogador, &colisao_cenario, contador,&portaSaida);
+        personagem_movimentacao(&jogador, &colisao_cenario, contador,&portaSaida,1);
 
         camera.target.x = jogador.posicao_quadrado.x;
         camera.target.y = jogador.posicao_quadrado.y;
@@ -817,7 +817,7 @@ int main()
         else if(estadoFaseUm==1) { 
             estadoJogo=5;
             //ChecarHS();
-            comecarFaseDois(&estadoFaseDois,largura_tela,altura_tela);
+            comecarFaseDois(&estadoFaseDois);
             ClearBackground(RAYWHITE);
        
         if(estadoFaseDois==-1){
@@ -828,7 +828,7 @@ int main()
             
         }else{
             
-               comecarFaseTres();
+               comecarFaseTres(&estadoFaseTres);
                ClearBackground(RAYWHITE);
                
                if(estadoFaseTres==-1){
@@ -860,34 +860,10 @@ int main()
         UnloadMusicStream(somFase);
         CloseAudioDevice(); 
  
- CloseWindow();*/
+ CloseWindow();
  
   
-   
-  //int estadoFaseDois=0;
-InitWindow(GetScreenWidth(),GetScreenHeight(),"");
-    SetTargetFPS(60);
-         
-    
-  
-  
-      
-      while(!WindowShouldClose()){
 
-       comecarFaseTres(&estadoFaseDois);
-       // comecarFaseDois(&estadoFaseDois);
-   
-     // testar();
-      
-      ClearBackground(RAYWHITE);
-      BeginDrawing();
-      
-     
-
-EndDrawing();  
-      }
-      
-   CloseWindow();
     
     
     return 0;
