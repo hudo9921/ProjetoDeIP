@@ -21,13 +21,13 @@ void tirarObstaculo(Jogador* jogador,int* podePassarPeloObstaculo){
     
 
 
-void comecarFaseTres(int* estadoFaseTres){
+void comecarFaseTres(int* estadoFaseTres,int dificuldade){
     
     srand(time(NULL));
     
     Font fonte =LoadFont("fonte.otf");
     
-    Texture2D campo= LoadTexture("img/fase03.png");
+    Texture2D campo= LoadTexture("img/fase03_corrigida.png");
     Texture2D alicate = LoadTexture("img/alicate.png");
     Texture2D obstaculo = LoadTexture("img/vasos_fase03.png");
     Texture2D arame = LoadTexture("img/arame_fase03.png");
@@ -55,12 +55,12 @@ void comecarFaseTres(int* estadoFaseTres){
         
         if(i%2!=0){
         
-            guarda[i].movimento=5+0.5;
+            guarda[i].movimento=5+0.3*dificuldade;
             guarda[i].sentidoCampoDeVisao=1;
         
         }else{
             
-            guarda[i].movimento=-5 + 0.5;
+            guarda[i].movimento=-(5 + 0.3*dificuldade);
             guarda[i].sentidoCampoDeVisao=-1;
         
         }
@@ -387,6 +387,7 @@ void comecarFaseTres(int* estadoFaseTres){
         
          //Atualização jogador 
           
+        personagem_movimentacao(&jogador,&colisao_cenario,contador,NULL,3);
         jogador.Up.x = jogador.posicao_quadrado.x + 5;
         jogador.Up.y = jogador.posicao_quadrado.y;
         jogador.Up.width = jogador.char_walk.width/3;
@@ -432,11 +433,10 @@ void comecarFaseTres(int* estadoFaseTres){
          if(!quebrouVaso) DrawTextureRec(obstaculo,(Rectangle){0.0f,0.0f,obstaculo.width,obstaculo.height},(Vector2){ 0.0f,0.0f },WHITE);  
          
           
-         DrawText(FormatText("%f||%f",jogador.posicao_quadrado.x,jogador.posicao_quadrado.y),100,800,50,RED);
+       
          
          draw_jogador(&jogador);
          
-        personagem_movimentacao(&jogador,&colisao_cenario,contador,NULL,3);
          for(int i=0;i<6;i++){
              
                desenharGuardas(&imagemGuardas,&guarda[i]);
@@ -472,7 +472,7 @@ void comecarFaseTres(int* estadoFaseTres){
          //esntate da sala 1
          }else if( jogador.posicao_quadrado.x >= estanteSala1[0].x &&jogador.posicao_quadrado.x <= estanteSala1[0].x+30 && jogador.posicao_quadrado.y>=estanteSala1[0].y && jogador.posicao_quadrado.y<=estanteSala1[0].y+estanteImagem.height+10 ){
              
-             DrawText("sjlifs",0,700,30,RED);
+            
              
              DrawTextureRec(mensagemProcurar,(Rectangle) {0.0f,0.0f,mensagemProcurar.width,mensagemProcurar.height},(Vector2){jogador.posicao_quadrado.x,jogador.posicao_quadrado.y-mensagemProcurar.height},WHITE);
              achouObjeto=1;
@@ -560,9 +560,20 @@ void comecarFaseTres(int* estadoFaseTres){
         
         
         
+        jogador.contador = 0;
+        
+        
+        
         EndDrawing();
         
-            jogador.contador = 0;
+        passouFaseTres(&jogador,&passouFaseTres);
+        seEntrouNoCampoDeVisao(&guarda[0],&imagemGuardas,"horizontal",jogador.posicao_quadrado.x,jogador.posicao_quadrado.y,jogador.char_walk,estadoFaseTres);
+        seEntrouNoCampoDeVisao(&guarda[1],&imagemGuardas,"horizontal",jogador.posicao_quadrado.x,jogador.posicao_quadrado.y,jogador.char_walk,estadoFaseTres);
+        seEntrouNoCampoDeVisao(&guarda[2],&imagemGuardas,"horizontal",jogador.posicao_quadrado.x,jogador.posicao_quadrado.y,jogador.char_walk,estadoFaseTres);
+        seEntrouNoCampoDeVisao(&guarda[3],&imagemGuardas,"horizontal",jogador.posicao_quadrado.x,jogador.posicao_quadrado.y,jogador.char_walk,estadoFaseTres);
+        seEntrouNoCampoDeVisao(&guarda[4],&imagemGuardas,"vertical",jogador.posicao_quadrado.x,jogador.posicao_quadrado.y,jogador.char_walk,estadoFaseTres);
+        seEntrouNoCampoDeVisao(&guarda[5],&imagemGuardas,"vertical",jogador.posicao_quadrado.x,jogador.posicao_quadrado.y,jogador.char_walk,estadoFaseTres);
+        
         
     }//fim while
     

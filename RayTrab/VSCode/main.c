@@ -875,11 +875,11 @@ fclose(PonteiroArquivo1);
         }
         else if (estadoJogo==2)
         {
-            comecarFaseDois(&estadoFaseDois);
+           // comecarFaseDois(&estadoFaseDois,dificuldade);
         }
         else if(estadoJogo==3)
         {
-            //drawfase3
+           comecarFaseTres(&estadoFaseTres,dificuldade);
         }
         else if(estadoJogo==4)
         {
@@ -1121,8 +1121,8 @@ fclose(PonteiroArquivo1);
             }
             
             //ChecarHS();
-            comecarFaseDois(&estadoFaseDois);
-            ClearBackground(RAYWHITE);
+           comecarFaseDois(&estadoFaseDois,dificuldade);
+            //ClearBackground(RAYWHITE);
        
         if(estadoFaseDois==-1){
             
