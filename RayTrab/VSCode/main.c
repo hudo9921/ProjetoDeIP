@@ -1,5 +1,6 @@
 #include "raylib.h"
 #include <stdlib.h>
+#include <stdio.h>
 #include <time.h>
 #include <string.h>
 #include "guardas.h"
@@ -24,6 +25,36 @@ void passouDeFaseUm(Jogador* jogador,Portas* porta,int* estadoFase){
     }  
     
 }
+void bubble_sort (int vetor[], int n) {
+    int k, j, aux;
+
+    for (k = 1; k < n; k++) {
+        for (j = 0; j < n - 1; j++) {
+            if (vetor[j] > vetor[j + 1]) {
+                aux          = vetor[j];
+                vetor[j]     = vetor[j + 1];
+                vetor[j + 1] = aux;
+            }
+        }
+    }
+}
+void reiniciarVariaveisFaseUm(Jogador* jogador,Colisao_cenario* colisao_cenario,Cronometro* cronometro){
+
+    colisao_cenario->chave = 0;
+    colisao_cenario->chave = rand()%12 + 1;
+    
+    
+
+    jogador->animar = 0;
+    jogador->contador = 0;
+    jogador->item = 0;
+    jogador->posicao_quadrado.x =550;
+    jogador->posicao_quadrado.y = 710;
+
+    cronometro->tempo=0;
+    cronometro->segundos=0;
+
+}
 
 
 
@@ -38,11 +69,15 @@ int main()
     int estadoFaseDois=0;
     int estadoFaseTres=0;
 
+    int fasecelecionada;
+
     int estadoMenu=0; //0=Menu continua qq coisa diferente o menu sai
 
     int estadoTelaPerdeu=0;
 
     int EstadoSelectLVL=0;
+
+    int EstadoTelaHS=0;
 
     int estadoJogo=0;//0=CarregarMenu. 2=LVLselect,3=CarregarFase1,4=CarregarFase2,5=CarregarFase3,6=CarregarHS 
         
@@ -62,7 +97,6 @@ int main()
     Cronometro cronometro;
     cronometro.tempo=0;
     cronometro.segundos=0;
-    cronometro.minutos=0;
     
     // FIM DAS VARIAVEOS DO CRONOMETRO
 
@@ -97,11 +131,21 @@ int main()
     PlayMusicStream(somFase); //toca a musica
     //FIM INICIANDO MUSICA DA FASE
     
-    
+   //fonte
+   Font Fonte =LoadFont("fonte.otf"); 
     
    //' ToggleFullscreen();
     bool SomLigadoBool=1;
+
+///Assets HS
+    Rectangle VoltarMenu;
+    VoltarMenu.x=550;
+    VoltarMenu.y=300;
+    VoltarMenu.width=800;
+    VoltarMenu.height=800;
+
    //Texturas do Menu
+   
     
     Texture2D HighScore = LoadTexture("img/Trofeu.png");
     Rectangle HighScoreClick;
@@ -136,7 +180,66 @@ int main()
     TelaPerdeuClick.width=1368;
     TelaPerdeuClick.height=1368;
 
+
+    //Verificar os lvl
+     FILE * PonteiroArquivo1;
+            PonteiroArquivo1 = fopen("HS.txt","r");
+            int ListaHS1[47];
+            for (int i = 0; i < 47; i++)
+            {
+                fscanf(PonteiroArquivo1,"%d",&ListaHS1[i]);
+            }
+
+    //variaveis select lvl
+    int fase2_unlocked=ListaHS1[45];
+    int fase3_unlocked=ListaHS1[46];
+fclose(PonteiroArquivo1);
+
+    int mostrar_dificuldade=0;
+    int dificuldade=0;
     //Assets Select LvL
+    Texture2D Fase1_Desbloqueada = LoadTexture("img/Fase1_Desbloqueada.png");
+    Rectangle Fase1_Click;
+    Fase1_Click.x=13;
+    Fase1_Click.y=120;
+    Fase1_Click.width=420;
+    Fase1_Click.height=236;
+    Texture2D Fase2_Bloqueada = LoadTexture("img/Fase2_Bloqueada.png");
+    Rectangle Fase2_Click;
+    Fase2_Click.x=469;
+    Fase2_Click.y=120;
+    Fase2_Click.width=420;
+    Fase2_Click.height=236;
+    Texture2D Fase2_Desbloqueada = LoadTexture("img/Fase2_Desbloqueada.png");
+    Texture2D Fase3_Bloqueada = LoadTexture("img/Fase3_Bloqueada.png");
+    Rectangle Fase3_Click;
+    Fase3_Click.x=925;
+    Fase3_Click.y=120;
+    Fase3_Click.width=420;
+    Fase3_Click.height=236;
+    Texture2D Fase3_Desbloqueada = LoadTexture("img/Fase3_Desbloqueada.png");
+    Texture2D Dificuldade1 = LoadTexture("img/Dificuldade1.png");
+    Rectangle Dif1_Click;
+    Dif1_Click.x=600;
+    Dif1_Click.y=380;
+    Dif1_Click.width=128;
+    Dif1_Click.height=123;
+    Texture2D Dificuldade2 = LoadTexture("img/Dificuldade2.png");
+    Rectangle Dif2_Click;
+    Dif2_Click.x=525;
+    Dif2_Click.y=500;
+    Dif2_Click.width=290.8;
+    Dif2_Click.height=126;
+    Texture2D Dificuldade3 = LoadTexture("img/Dificuldade3.png");
+    Rectangle Dif3_Click;
+    Dif3_Click.x=458.8;
+    Dif3_Click.y=650;
+    Dif3_Click.width=440;
+    Dif3_Click.height=123.5;
+    Texture2D Fundo_LVL_Select = LoadTexture("img/Fundo_LVL_Select.png");
+   
+
+
     
     
 
@@ -474,7 +577,6 @@ int main()
 
     while (!WindowShouldClose()){
 
-        UpdateMusicStream(somFase);
 
         if(SomLigadoBool)
         {
@@ -487,21 +589,35 @@ int main()
         
 
         if(estadoJogo==0)
-        {   
+        {   UpdateMusicStream(somFase);
             while (estadoMenu==0)
             {   Mouse=GetMousePosition();
                if  (CheckCollisionPointRec(Mouse,BotaoPlayClick)) 
                {
                 if(IsMouseButtonReleased(MOUSE_LEFT_BUTTON))
                     {
-                        estadoJogo=1;
+                        estadoJogo=4;
                         estadoMenu=1;
                         estadoFaseUm=0;
-                        jogador.posicao_quadrado.x=500;
-                        jogador.posicao_quadrado.y=600;
-                        jogador.item=0;
+                        //jogador.posicao_quadrado.x=500;
+                        //jogador.posicao_quadrado.y=600;
+                        //jogador.item=0;
                     }
                }
+                if(CheckCollisionPointRec(Mouse,HighScoreClick))
+                    {
+                        if(IsMouseButtonReleased(MOUSE_LEFT_BUTTON))
+                        {   
+                            estadoJogo=5;
+                            estadoMenu=1;
+                            EstadoTelaHS=0;
+                            dificuldade=rand()%4;
+                            if(dificuldade==0)dificuldade++;
+                            fasecelecionada=rand()%4;
+                            if(fasecelecionada==0)fasecelecionada++;
+                            cronometro.segundos=1000000000;
+                        }
+                    }  
                if (CheckCollisionPointRec(Mouse,SomClick))
                 {   
                     if(IsMouseButtonReleased(MOUSE_LEFT_BUTTON))
@@ -531,7 +647,7 @@ int main()
             
         }
          else if(estadoJogo==1)
-           {
+           {reiniciarVariaveisFaseUm(&jogador,&colisao_cenario,&cronometro);
              while(estadoFaseUm==0){ 
         
           
@@ -608,6 +724,7 @@ int main()
         BeginDrawing();
 
             ClearBackground(WHITE);
+            DrawTexture(Fundo_LVL_Select,0,0,WHITE);
            // BeginMode2D(camera);
                 for (int i = 0; i < 15; i++)
                 {
@@ -729,7 +846,7 @@ int main()
             //FIM LOGICA PORTA
      
            // EndMode2D();
-            DrawText(FormatText("%2i:%2i",cronometro.minutos,cronometro.segundos),0,0,50,LIGHTGRAY);
+            DrawText(FormatText("%2i",cronometro.segundos),50,60,50,LIGHTGRAY);
             
             
             if( jogador.item == 1 )
@@ -757,7 +874,7 @@ int main()
         }
         else if (estadoJogo==2)
         {
-            //drawfase2
+            comecarFaseDois(&estadoFaseDois,largura_tela,altura_tela);
         }
         else if(estadoJogo==3)
         {
@@ -768,13 +885,178 @@ int main()
             EstadoSelectLVL=0;
             while(EstadoSelectLVL==0)
                 {
+                    Mouse=GetMousePosition();
+                    if  (CheckCollisionPointRec(Mouse,Fase1_Click)) 
+                        {
+                            if(IsMouseButtonReleased(MOUSE_LEFT_BUTTON))
+                                {
+                                estadoJogo=1;
+                                mostrar_dificuldade=1;
+                                fasecelecionada=estadoJogo;
+                                }
+                         }   
+                    if(CheckCollisionPointRec(Mouse,Fase2_Click)&&fase2_unlocked==1)
+                        {
+                            if(IsMouseButtonReleased(MOUSE_LEFT_BUTTON))
+                                {
+                                estadoJogo=2;
+                            mostrar_dificuldade=1;
+                            fasecelecionada=estadoJogo;
+                                }
+                            
+                        }
+                    if(CheckCollisionPointRec(Mouse,Fase3_Click)&&fase3_unlocked==1)
+                        {
+                            if(IsMouseButtonReleased(MOUSE_LEFT_BUTTON))
+                                {
+                                estadoJogo=3;
+                            mostrar_dificuldade=1;
+                            fasecelecionada=estadoJogo;
+                                }
+                            
+                        }
+                    if(CheckCollisionPointRec(Mouse,Dif1_Click)&&mostrar_dificuldade==1)
+                        {
+                            if(IsMouseButtonReleased(MOUSE_LEFT_BUTTON))
+                                {
+                               EstadoSelectLVL=1;
+                               mostrar_dificuldade=0;
+                               dificuldade=1;
+                               
+                                }
+                            
+                        }
+                    if(CheckCollisionPointRec(Mouse,Dif2_Click)&&mostrar_dificuldade==1)
+                        {
+                            if(IsMouseButtonReleased(MOUSE_LEFT_BUTTON))
+                                {
+                               EstadoSelectLVL=1;
+                               mostrar_dificuldade=0;
+                               dificuldade=2;
+                                }
+                        }
+                    if(CheckCollisionPointRec(Mouse,Dif3_Click)&&mostrar_dificuldade==1)
+                        {
+                            if(IsMouseButtonReleased(MOUSE_LEFT_BUTTON))
+                                {
+                               EstadoSelectLVL=1;
+                               mostrar_dificuldade=0;
+                               dificuldade=3;
+                                }
+                        }
+
+                    BeginDrawing();
+                        ClearBackground(WHITE);
+                        DrawTexture(Fundo_LVL_Select,0,0,WHITE);
+                        DrawTexture(Fase1_Desbloqueada,13.4,120,WHITE);
+                        if(fase2_unlocked==1)
+                        {
+                            DrawTexture(Fase2_Desbloqueada,469,120,WHITE);
+                        }
+                        else if (fase2_unlocked==0)
+                        {
+                            DrawTexture(Fase2_Bloqueada,469,120,WHITE);
+                        }
+                        if(fase3_unlocked==1)
+                        {
+                            DrawTexture(Fase3_Desbloqueada,925,120,WHITE);
+                        }
+                        else if (fase3_unlocked==0)
+                        {
+                            DrawTexture(Fase3_Bloqueada,925,120,WHITE);
+                        }
+                        if(mostrar_dificuldade==1)
+                        {
+                            DrawTexture(Dificuldade1,600,380,WHITE);
+                            DrawTexture(Dificuldade2,525,500,WHITE);
+                            DrawTexture(Dificuldade3,458.8,650,WHITE);
+                        }
+                        
+                    EndDrawing();
 
                 }
         }
         else if(estadoJogo==5)
         {
-            //drawHighScore
-        }
+            FILE * PonteiroArquivo;
+            PonteiroArquivo = fopen("HS.txt","r");
+            int ListaHS[47];
+            int FaseHS = fasecelecionada;
+            int DificuldadeHS=dificuldade;
+            int LS=(15*FaseHS)-1;
+            int LI=LS-14;
+            int Fimintervalo = (LI+5*DificuldadeHS)-1;
+            int ComecoIntervalo = Fimintervalo-4;
+            for (int i = 0; i < 47; i++)
+            {
+                fscanf(PonteiroArquivo,"%d",&ListaHS[i]);
+            }
+            
+            int top1,top2,top3,top4,top5;
+
+            top1=ListaHS[ComecoIntervalo];
+            top2=ListaHS[ComecoIntervalo+1];
+            top3=ListaHS[ComecoIntervalo+2];
+            top4=ListaHS[ComecoIntervalo+3];
+            top5=ListaHS[ComecoIntervalo+4];
+
+            int listaTop[5]={top1,top2,top3,top4,top5};
+            int gambi=3;
+            int resultado_atual = cronometro.segundos;
+
+            for(int i=4;i>=0;i--)
+                {
+                    if(resultado_atual<=listaTop[i])
+                        {   
+                            gambi=101010;
+                            listaTop[i]=resultado_atual;
+                            break;
+                        }
+                }
+            bubble_sort(listaTop, 5);
+
+            ListaHS[ComecoIntervalo]=listaTop[0];
+            ListaHS[ComecoIntervalo+1]=listaTop[1];
+            ListaHS[ComecoIntervalo+2]=listaTop[2];
+            ListaHS[ComecoIntervalo+3]=listaTop[3];
+            ListaHS[ComecoIntervalo+4]=listaTop[4];
+            fclose(PonteiroArquivo);
+            FILE * F;
+            F=fopen("HS.txt","w");
+            for (int i = 0; i < 47; i++)
+            {
+                fprintf(F,"%i ",ListaHS[i]);
+            }
+            fclose(F);
+            while(EstadoTelaHS==0){
+                Mouse=GetMousePosition();
+                if(CheckCollisionPointRec(Mouse,VoltarMenu))
+                        {
+                            if(IsMouseButtonReleased(MOUSE_LEFT_BUTTON))
+                                {
+                               EstadoTelaHS=1;
+                               estadoMenu=0;
+                               estadoJogo=0;
+                                }
+                        }
+                BeginDrawing();
+                    ClearBackground(WHITE);
+                    DrawTexture(Fundo_LVL_Select,0,0,WHITE);
+                    DrawTextEx(Fonte,FormatText("Top 1: %i",listaTop[0]),(Vector2){150,200},95,1,RED);
+                    DrawTextEx(Fonte,FormatText("Top 2: %i",listaTop[1]) ,(Vector2){150,280},95,1,RED);
+                    DrawTextEx(Fonte,FormatText("Top 3: %i",listaTop[2]) ,(Vector2){150,360},95,1,RED);
+                    DrawTextEx(Fonte,FormatText("Top 4: %i",listaTop[3]) ,(Vector2){150,440},95,1,RED);
+                    DrawTextEx(Fonte,FormatText("Top 5: %i",listaTop[4]) ,(Vector2){150,520},95,1,RED);
+                    DrawTextEx(Fonte,FormatText("Fase: %i",FaseHS) ,(Vector2){350,20},95,1,GOLD);
+                    DrawTextEx(Fonte,FormatText("Dificuldade: %i",DificuldadeHS) ,(Vector2){350,70},95,1,GOLD);
+                    DrawTextEx(Fonte,FormatText("Clique aqui para voltar\n ao menu principal!") ,(Vector2){550,300},95,1,BLACK);
+                    if(gambi!=3)
+                        {
+                            DrawTextEx(Fonte,FormatText("Novo Top5! Parabens!",listaTop[4]) ,(Vector2){550,620},95,1,BLACK);
+                        }
+                EndDrawing();
+            }
+        }  
         else if(estadoJogo==6)
         {   estadoTelaPerdeu=0;
             while(estadoTelaPerdeu==0)
@@ -815,20 +1097,62 @@ int main()
         } 
         else if(estadoFaseUm==1) { 
             estadoJogo=5;
+            estadoFaseUm=0;
+            FILE * PonteiroArquivo;
+            PonteiroArquivo = fopen("HS.txt","r");
+            int ListaHS[47];
+            for (int i = 0; i < 47; i++)
+            {
+                fscanf(PonteiroArquivo,"%d",&ListaHS[i]);
+            }
+            
+            if(ListaHS[45]==0)
+            {
+                ListaHS[45]=1;
+                fclose(PonteiroArquivo);
+                 FILE * F;
+                 F=fopen("HS.txt","w");
+            for (int i = 0; i < 47; i++)
+            {
+                fprintf(F,"%i ",ListaHS[i]);
+            }
+            fclose(F);
+            }
+            
             //ChecarHS();
-            comecarFaseDois(&estadoFaseDois,largura_tela,altura_tela);
             //ClearBackground(RAYWHITE);
        
         if(estadoFaseDois==-1){
             
-            DrawText("Perdeu2",100,100,50,RED);
+            estadoJogo=6;
+            estadoFaseDois=0;
            
            
             
-        }else{
+        }else if(estadoFaseDois==1){
             
-               comecarFaseTres();
-               ClearBackground(RAYWHITE);
+            estadoJogo=5;
+            estadoFaseDois=0;
+            FILE * PonteiroArquivo;
+            PonteiroArquivo = fopen("HS.txt","r");
+            int ListaHS[47];
+            for (int i = 0; i < 47; i++)
+            {
+                fscanf(PonteiroArquivo,"%d",&ListaHS[i]);
+            }
+            
+            if(ListaHS[46]==0)
+            {
+                ListaHS[46]=1;
+                fclose(PonteiroArquivo);
+                 FILE * F;
+                 F=fopen("HS.txt","w");
+            for (int i = 0; i < 47; i++)
+            {
+                fprintf(F,"%i ",ListaHS[i]);
+            }
+            fclose(F);
+            }
                
                if(estadoFaseTres==-1){
                     
