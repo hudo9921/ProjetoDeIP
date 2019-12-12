@@ -10,6 +10,7 @@
 #include "fase2.h"
 #include "fase3.h"
 
+
 void passouDeFaseUm(Jogador* jogador,Portas* porta,int* estadoFase){
     
     if(jogador->posicao_quadrado.x >= porta->imagem.width &&  jogador->posicao_quadrado.x <= porta->imagem.width+porta->x && jogador->posicao_quadrado.y <= porta->imagem.height/2+porta->y){
@@ -874,7 +875,7 @@ fclose(PonteiroArquivo1);
         }
         else if (estadoJogo==2)
         {
-            comecarFaseDois(&estadoFaseDois,largura_tela,altura_tela);
+            comecarFaseDois(&estadoFaseDois);
         }
         else if(estadoJogo==3)
         {
@@ -1184,41 +1185,8 @@ fclose(PonteiroArquivo1);
         CloseAudioDevice(); 
  
  CloseWindow();
- 
-  
-   
-  //int estadoFaseDois=0;
-InitWindow(GetScreenWidth(),GetScreenHeight(),"");
-    SetTargetFPS(60);
-         
-    
-  
-  
-      
-      while(!WindowShouldClose()){
-
-     comecarFaseDois(&estadoFaseDois,GetScreenWidth(), GetScreenHeight());
-
-   
       
       
-      ClearBackground(RAYWHITE);
-      BeginDrawing();
-      
-      if(estadoFaseDois==-1){
-            
-            
-            
-            DrawText("Perdeu",100,100,50,RED);
-            
-           
-            
-        }else{   
-         
-           DrawText("Ganhou",100,100,40,GREEN); 
-} 
-EndDrawing();  
-      }
    CloseWindow();
     
     
