@@ -354,7 +354,7 @@ void comecarFaseTres(int* estadoFaseTres,int dificuldade){
     int tempoDoFrame=0;
     int frameAtual=0;
     
-    while(!WindowShouldClose()){
+    while(*estadoFaseTres==0){
         //Atualização guardas 
         
         tempoDoFrame++;
