@@ -76,11 +76,11 @@ void desenharCampoDeVisao(Guardas* guarda,char direcao[12],Texture2D* imagem){
     if(strcmp(direcao,"horizontal")==0){
         if(guarda->sentidoCampoDeVisao>0){
         
-        DrawRectangle(guarda->x+(guarda->sentidoCampoDeVisao*imagem->width/3),guarda->y,guarda->campoDeVisao,imagem->height/4,RED);	
+        DrawRectangle(guarda->x+(guarda->sentidoCampoDeVisao*imagem->width/3),guarda->y,guarda->campoDeVisao,imagem->height/4,BLANK);	
         
         }else{
             
-            DrawRectangle(guarda->x+(guarda->sentidoCampoDeVisao*guarda->campoDeVisao),guarda->y,guarda->campoDeVisao,imagem->height/4,RED);	
+            DrawRectangle(guarda->x+(guarda->sentidoCampoDeVisao*guarda->campoDeVisao),guarda->y,guarda->campoDeVisao,imagem->height/4,BLANK);	
         }
         
 }else{

@@ -31,13 +31,21 @@ void passouDeFaseUm(Jogador* jogador,Portas* porta,int* estadoFase){
 int main() 
 {
     
-   /*
+   
     srand(time(NULL));
 
     int estadoFaseUm=0; //estadoFaseUm=0,jogo continua; estadoFaseUm=1,jogador passou de fase; estadoFaseUm=-1, jogador perdeu a fase; 
     
     int estadoFaseDois=0;
-    int estadoFaseTres=0;    
+    int estadoFaseTres=0;
+
+    int estadoMenu=0; //0=Menu continua qq coisa diferente o menu sai
+
+    int estadoTelaPerdeu=0;
+
+    int EstadoSelectLVL=0;
+
+    int estadoJogo=0;//0=CarregarMenu. 2=LVLselect,3=CarregarFase1,4=CarregarFase2,5=CarregarFase3,6=CarregarHS 
         
     int frameAtual=0;
     int tempoDoFrame=0;
@@ -93,6 +101,49 @@ int main()
     
     
    //' ToggleFullscreen();
+    bool SomLigadoBool=1;
+   //Texturas do Menu
+    
+    Texture2D HighScore = LoadTexture("img/Trofeu.png");
+    Rectangle HighScoreClick;
+    HighScoreClick.x=0;
+    HighScoreClick.y=0;
+    HighScoreClick.width=120;
+    HighScoreClick.height=120;
+
+    Texture2D SomLigado = LoadTexture("img/soundOnBlack.png");
+    Rectangle SomClick;
+    SomClick.x=125;
+    SomClick.y=0;
+    SomClick.width=100;
+    SomClick.height=100;
+
+    Texture2D SomDesligado = LoadTexture("img/SoundOffBlack.png");
+    Texture2D LogoJogo = LoadTexture("img/Logo_do_jogo.png");
+    Texture2D BotaoPlay = LoadTexture("img/BotaoPlay.png");
+    Rectangle BotaoPlayClick;
+    BotaoPlayClick.x=490;
+    BotaoPlayClick.y=590;
+    BotaoPlayClick.width=340;
+    BotaoPlayClick.height=195;
+
+    Texture2D BG = LoadTexture("img/tela_de_fundo_do_menu.png");
+
+    //Assets da tela perdeu
+    Texture2D TelaPerdeu = LoadTexture("img/Tela_Perdeu.png");
+    Rectangle TelaPerdeuClick;
+    TelaPerdeuClick.x=0;
+    TelaPerdeuClick.y=0;
+    TelaPerdeuClick.width=1368;
+    TelaPerdeuClick.height=1368;
+
+    //Assets Select LvL
+    
+    
+
+
+    //vetor do mouse
+    Vector2 Mouse={0.0f,0.0f};
 
     //texturas
     Texture2D chao = LoadTexture("img/chao3.png");
@@ -424,11 +475,68 @@ int main()
 
     while (!WindowShouldClose()){
 
+        UpdateMusicStream(somFase);
+
+        if(SomLigadoBool)
+        {
+            SetMusicVolume(somFase,0.50f);
+        }
+        else
+        {
+            SetMusicVolume(somFase,0.00f);
+        }
         
+
+        if(estadoJogo==0)
+        {   
+            while (estadoMenu==0)
+            {   Mouse=GetMousePosition();
+               if  (CheckCollisionPointRec(Mouse,BotaoPlayClick)) 
+               {
+                if(IsMouseButtonReleased(MOUSE_LEFT_BUTTON))
+                    {
+                        estadoJogo=1;
+                        estadoMenu=1;
+                        estadoFaseUm=0;
+                        jogador.posicao_quadrado.x=500;
+                        jogador.posicao_quadrado.y=600;
+                        jogador.item=0;
+                    }
+               }
+               if (CheckCollisionPointRec(Mouse,SomClick))
+                {   
+                    if(IsMouseButtonReleased(MOUSE_LEFT_BUTTON))
+                    {
+                        SomLigadoBool=!SomLigadoBool;
+                    }
+                    
+                }
+
+                BeginDrawing();
+                    ClearBackground(WHITE);
+                    DrawTexture(BG,0,0,WHITE);
+                    DrawTexture(HighScore,0,0,WHITE);
+                    DrawTexture(LogoJogo,510,0,WHITE);
+                    DrawTexture(BotaoPlay,490,590,WHITE);
+                    if(SomLigadoBool)
+                    {
+                        DrawTexture(SomLigado,125,0,WHITE);
+                    }
+                    else
+                    {
+                        DrawTexture(SomDesligado,125,0,WHITE);
+                    }
+                    
+                EndDrawing();
+            }
+            
+        }
+         else if(estadoJogo==1)
+           {
+             while(estadoFaseUm==0){ 
         
-        while(estadoFaseUm==0){ 
-        
-          UpdateMusicStream(somFase);
+          
+  
         
     // MUDA FRAME DOS GUARDAS;
         tempoDoFrame++;
@@ -575,7 +683,7 @@ int main()
                     DrawTexture( estante, 323 + 216 + 295*2 , 123 + 445, GRAY);
                 }
                 draw_jogador(&jogador);
-                DrawFPS(jogador.posicao_quadrado.x - 190,jogador.posicao_quadrado.y - 270);
+                //DrawFPS(jogador.posicao_quadrado.x - 190,jogador.posicao_quadrado.y - 270);
 
                 if (contador[1] > 0 )
                 {
@@ -646,20 +754,69 @@ int main()
       
     }
     
-    }//FIM WHILE(!acabouFaseUm) // while da fase 1
+    }
+        }
+        else if (estadoJogo==2)
+        {
+            //drawfase2
+        }
+        else if(estadoJogo==3)
+        {
+            //drawfase3
+        }
+        else if(estadoJogo==4)
+        {
+            EstadoSelectLVL=0;
+            while(EstadoSelectLVL==0)
+                {
+
+                }
+        }
+        else if(estadoJogo==5)
+        {
+            //drawHighScore
+        }
+        else if(estadoJogo==6)
+        {   estadoTelaPerdeu=0;
+            while(estadoTelaPerdeu==0)
+            {
+                Mouse=GetMousePosition();
+               if  (CheckCollisionPointRec(Mouse,TelaPerdeuClick)) 
+               {
+                if(IsMouseButtonReleased(MOUSE_LEFT_BUTTON))
+                    {
+                        estadoTelaPerdeu=1;
+                        estadoMenu=0;
+                        estadoJogo=0;
+                        BeginDrawing();
+                        DrawRectangle(0,0,300,300,RED);
+                        EndDrawing();
+                    }
+               }
+                BeginDrawing();
+                        ClearBackground(WHITE);
+                        DrawTexture(TelaPerdeu,0,0,WHITE);
+                EndDrawing();
+               
+            }
+        }
         
-      
+        //FIM WHILE(!acabouFaseUm) // while da fase 1
+    
         
-        ClearBackground(RAYWHITE);
         
         BeginDrawing();
         
-        if(estadoFaseUm == -1){
+        if(estadoFaseUm == -1)
+        {
             
-            DrawText("Perdeu",100,100,50,RED);
+            estadoJogo=6;
+            estadoFaseUm=0;
            
-        } else { 
-        
+        } 
+        else if(estadoFaseUm==1) { 
+            estadoJogo=5;
+            //ChecarHS();
             comecarFaseDois(&estadoFaseDois,largura_tela,altura_tela);
             ClearBackground(RAYWHITE);
        
@@ -685,6 +842,7 @@ int main()
                }
         
         }
+      
     }
         
         
@@ -692,7 +850,7 @@ int main()
         
             
         
-        EndDrawing();
+        EndDrawing(); 
     
     
     
@@ -700,13 +858,13 @@ int main()
         
         UnloadTexture(imagemGuardas);
         UnloadMusicStream(somFase);
-CloseAudioDevice(); 
+        CloseAudioDevice(); 
  
  CloseWindow();*/
  
   
    
-  int estadoFaseDois=0;
+  //int estadoFaseDois=0;
 InitWindow(GetScreenWidth(),GetScreenHeight(),"");
     SetTargetFPS(60);
          
