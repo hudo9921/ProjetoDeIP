@@ -18,10 +18,18 @@ int segundos;
 void contarTempo(Cronometro* cronometro){
 
     
-      if(cronometro->tempo%60==0)
-        {
+      if(cronometro->tempo%60==0){
+            
             cronometro->tempo=0;
-            cronometro->segundos++; 
+            cronometro->segundos++;
+            
+            if(cronometro->segundos%60==0){
+                
+                cronometro->segundos=0;
+                cronometro->minutos++;
+                
+            }
+            
         }
 
 
