@@ -284,7 +284,7 @@ fclose(PonteiroArquivo1);
       guarda1.x=comecoLarguraAreaJogo;
       guarda1.y=360;
       guarda1.campoDeVisao=100;
-      guarda1.movimento =-5;
+      guarda1.movimento =-(5+0.3*dificuldade);
       guarda1.imagem=(Rectangle){0.0f,0.0f,imagemGuardas.width/3,imagemGuardas.height/4};
       guarda1.imagem.y=2*imagemGuardas.height/4;   
       guarda1.sentidoCampoDeVisao= -1;
@@ -297,7 +297,7 @@ fclose(PonteiroArquivo1);
       guarda2.x=fimLarguraAreaJogo-imagemGuardas.width/3;
       guarda2.y=350+imagemGuardas.height/4+50;
       guarda2.campoDeVisao=100;
-      guarda2.movimento =5
+      guarda2.movimento =5+0.3*dificuldade;
 ;
       guarda2.imagem=(Rectangle){0.0f,0.0f,imagemGuardas.width/3,imagemGuardas.height/4};
       guarda2.imagem.y=imagemGuardas.height/4;
@@ -875,11 +875,11 @@ fclose(PonteiroArquivo1);
         }
         else if (estadoJogo==2)
         {
-            comecarFaseDois(&estadoFaseDois);
+            comecarFaseDois(&estadoFaseDois,dificuldade);
         }
         else if(estadoJogo==3)
         {
-            //drawfase3
+           comecarFaseTres(&estadoFaseTres,dificuldade);
         }
         else if(estadoJogo==4)
         {
@@ -1027,7 +1027,8 @@ fclose(PonteiroArquivo1);
             for (int i = 0; i < 47; i++)
             {
                 fprintf(F,"%i ",ListaHS[i]);
-            }
+           
+           }
             fclose(F);
             while(EstadoTelaHS==0){
                 Mouse=GetMousePosition();
@@ -1121,7 +1122,7 @@ fclose(PonteiroArquivo1);
             }
             
             //ChecarHS();
-            comecarFaseDois(&estadoFaseDois);
+            comecarFaseDois(&estadoFaseDois,dificuldade);
             ClearBackground(RAYWHITE);
        
         if(estadoFaseDois==-1){
