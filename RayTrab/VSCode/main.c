@@ -1083,12 +1083,6 @@ fclose(PonteiroArquivo1);
             }
         }
         
-        //FIM WHILE(!acabouFaseUm) // while da fase 1
-    
-        
-        
-        BeginDrawing();
-        
         if(estadoFaseUm == -1)
         {
             
@@ -1117,13 +1111,10 @@ fclose(PonteiroArquivo1);
             {
                 fprintf(F,"%i ",ListaHS[i]);
             }
+            fase2_unlocked=1;
             fclose(F);
             }
-            
-            //ChecarHS();
-            //comecarFaseDois(&estadoFaseDois);
-           // ClearBackground(RAYWHITE);
-       
+        }
         if(estadoFaseDois==-1){
             
             estadoJogo=6;
@@ -1154,31 +1145,22 @@ fclose(PonteiroArquivo1);
                 fprintf(F,"%i ",ListaHS[i]);
             }
             fclose(F);
+            fase3_unlocked=1;
+            }
             }
                
                if(estadoFaseTres==-1){
                     
-                      DrawText("Perdeu3",100,100,50,RED);
+                      estadoJogo=6;
+                      estadoFaseTres=0;
           
-               }else if(estadoFaseTres==1){
+               }else if(estadoFaseTres==1)
+               {
                    
-                     DrawText("Ganhou essa bagaça",100,100,50,RED);
+                     estadoFaseTres=0;
+                     estadoJogo=5;
                    
-               }
-        
-        }
-      
-    }
-        
-        
-        
-        
-            
-        
-        EndDrawing(); 
-    
-    
-    
+               } 
     }//FIM WHILE(!WINDOWSHOULDCLOSE())
         
         UnloadTexture(imagemGuardas);

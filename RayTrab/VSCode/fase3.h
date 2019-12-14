@@ -1,4 +1,6 @@
 #include "raylib.h"
+#include <time.h>
+#include <string.h>
 #ifndef FASE2_H
 #define FASE2_H
 #endif
@@ -39,12 +41,20 @@ void comecarFaseTres(int* estadoFaseTres,int dificuldade){
     
     
     int objetoDeSalaSorteado= (rand()%2)+1;
-    int cortouArame=1;
+    int cortouArame=0;
     int pegouAlicate=0;
     int pegouMartelo=0;
     int achouObjeto=0;
     int quebrouVaso = 0;
     
+    //Crono rtro
+    
+    Cronometro cronometro;
+    cronometro.segundos=0;
+    cronometro.tempo=0;    
+    //
+
+
     //Iniciando Guardas
     Guardas guarda[6];
     
@@ -544,16 +554,14 @@ void comecarFaseTres(int* estadoFaseTres,int dificuldade){
            
           if(jogador.item==1 && pegouAlicate){
                 
-                DrawTextureRec(alicate,(Rectangle) {0.0f,0.0f,alicate.width,alicate.height}, (Vector2) {1300,700},WHITE );
+                DrawTextureRec(alicate,(Rectangle) {0.0f,0.0f,alicate.width,alicate.height}, (Vector2) {1200,600},WHITE );
                 
     
     }
     
         if(pegouMartelo){
             
-                DrawTextureRec(martelo,(Rectangle) {0.0f,0.0f,martelo.width,martelo.height}, (Vector2) {1300,700},WHITE );
-            
-            
+                DrawTextureRec(martelo,(Rectangle) {0.0f,0.0f,martelo.width,martelo.height}, (Vector2) {1200,600},WHITE );
         }
                 
             
@@ -561,9 +569,10 @@ void comecarFaseTres(int* estadoFaseTres,int dificuldade){
         
         
         jogador.contador = 0;
-        
-        
-        
+        cronometro.tempo++;
+        contarTempo(&cronometro);
+        DrawText(FormatText("%2i",cronometro.segundos),100,100,30,LIGHTGRAY);
+
         EndDrawing();
         
         passouFaseTres(&jogador,estadoFaseTres);

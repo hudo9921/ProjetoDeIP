@@ -12,7 +12,7 @@
 
 void passouFaseDois(Jogador* jogador,int* estadoFase){
       
-   if(jogador->posicao_quadrado.y==58){
+   if(jogador->posicao_quadrado.y==90){
         
       *estadoFase=1;
         
@@ -638,13 +638,13 @@ void comecarFaseDois(int* estadoFaseDois,int dificuldade){
           
             if(jogador.item==1 && pegouAlicate){
                 
-                DrawTextureRec(alicate,(Rectangle) {0.0f,0.0f,alicate.width,alicate.height}, (Vector2) {1300,700},WHITE );
+                DrawTextureRec(alicate,(Rectangle) {0.0f,0.0f,alicate.width,alicate.height}, (Vector2) {1200,600},WHITE );
                 
             }
             
              if(jogador.item==1 && pegouChave){
                 
-               DrawTextureRec(chave,(Rectangle) {0.0f,0.0f,chave.width,chave.height}, (Vector2) {1300,700},WHITE );
+               DrawTextureRec(chave,(Rectangle) {0.0f,0.0f,chave.width,chave.height}, (Vector2) {1200,600},WHITE );
                 
             }
             
